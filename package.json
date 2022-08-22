@@ -24,6 +24,7 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^8.5.1",
     "memorystore": "^1.6.7",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "nodemailer": "^6.7.6",
@@ -32,6 +33,8 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "sequelize": "^6.21.4",
+    "sequelize-cli": "^6.4.1",
     "server.js": "^1.0.0"
   }
 }
