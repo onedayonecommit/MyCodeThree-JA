@@ -44,11 +44,15 @@ router.post("/email", (req, res) => {
     if (err) {
       console.log("qserr", err);
     } else if (result[0] == undefined) {
-      req.session.token = jwt.sign(
+      req.session.emailtoken = jwt.sign(
         {
-          userid: email,
+          user_email: email,
         },
-        process.env.ACCESSTOKEN_SECRET
+        process.env.ACCESSTOKEN_SECRET,
+        {
+          expiresIn: "5m",
+          issuer: "gyeonghwan",
+        }
       );
       req.session.user_email = email;
       let sendmail = {
@@ -70,7 +74,11 @@ router.post("/email", (req, res) => {
 // 이메일 인증번호 확인 하는 곳
 router.post("/authcheck", (req, res) => {
   let authnumber = req.body.authnumber;
-  if (req.session.mailauth == authnumber) res.send("suc");
+  if (
+    req.session.mailauth == authnumber &&
+    jwt.verify(req.session.emailtoken, process.env.ACCESSTOKEN_SECRET)
+  )
+    res.send("suc");
   else res.send("fail");
 });
 
