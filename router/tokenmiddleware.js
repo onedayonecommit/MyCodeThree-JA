@@ -25,6 +25,7 @@ const middleware = (req, res, next) => {
         if (err) console.log(err);
         else if (result[0] == undefined) {
           res.send("tokenfail");
+          // wntjr
         } else {
           if (jwt.verify(result[0].refresh, process.env.REFRESHTOKEN_SECRET)) {
             req.session.access_token = jwt.sign(
