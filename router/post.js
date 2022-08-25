@@ -6,6 +6,7 @@ const Session = require("../config/session");
 const router = express.Router();
 const mailer = require("./mailer");
 const randomauth = require("./randomauth");
+const jwt = require("jsonwebtoken");
 router.use(session(Session));
 
 const temp = mysql.createConnection({
@@ -43,6 +44,12 @@ router.post("/email", (req, res) => {
     if (err) {
       console.log("qserr", err);
     } else if (result[0] == undefined) {
+      req.session.token = jwt.sign(
+        {
+          userid: email,
+        },
+        process.env.ACCESSTOKEN_SECRET
+      );
       req.session.user_email = email;
       let sendmail = {
         toEmail: email,
