@@ -14,8 +14,9 @@ const temp = mysql.createConnection({
   host: "localhost",
   database: "test99",
 });
+
+// 로그인 요청 처리하는 곳
 router.post("/login", (req, res) => {
-  console.log(req.body);
   temp.query(
     "select pw from members where id = ?",
     req.body.id,
@@ -25,7 +26,6 @@ router.post("/login", (req, res) => {
         result[0] != undefined &&
         bcrypt.compareSync(req.body.pw, result[0].pw)
       ) {
-        console.log("password suc");
         res.send("suc");
       } else if (!bcrypt.compareSync(req.body.pw, result[0].pw)) {
         res.send("fail");
@@ -34,17 +34,16 @@ router.post("/login", (req, res) => {
   );
 });
 
+// 이메일 인증 하는 곳
 router.post("/email", (req, res) => {
   const { email } = req.body;
   const authnumber = randomauth.randomfunc();
   // req.session.authnumber = bcrypt.hashSync(authnumber, 10);
   temp.query("select * from members where email = ?", email, (err, result) => {
-    console.log(result);
     if (err) {
       console.log("qserr", err);
     } else if (result[0] == undefined) {
       req.session.user_email = email;
-      console.log(req.session);
       let sendmail = {
         toEmail: email,
         subject: `안녕하세요 내코석 이메일 인증번호 입니다.`,
@@ -52,7 +51,6 @@ router.post("/email", (req, res) => {
       };
       mailer.sendmail(sendmail);
       req.session.mailauth = authnumber;
-      console.log(req.session);
       res.send("suc");
     } else if (result[0] != undefined) {
       res.send("fail");
@@ -62,12 +60,14 @@ router.post("/email", (req, res) => {
   });
 });
 
+// 이메일 인증번호 확인 하는 곳
 router.post("/authcheck", (req, res) => {
   let authnumber = req.body.authnumber;
   if (req.session.mailauth == authnumber) res.send("suc");
   else res.send("fail");
 });
 
+// 아이디 중복 확인 하는 곳
 router.post("/idcheck", (req, res) => {
   temp.query(
     "select id from members where id = ?",
@@ -76,13 +76,13 @@ router.post("/idcheck", (req, res) => {
       if (err) console.log(err);
       else if (result[0] == undefined) {
         req.session.user_id = req.body.id;
-        console.log(req.session);
         res.send("suc");
       } else res.send("fail");
     }
   );
 });
 
+// 회원가입 요청 처리하는 곳
 router.post("/signup", (req, res) => {
   let { id, pw, email, authnumber } = req.body;
   if (
