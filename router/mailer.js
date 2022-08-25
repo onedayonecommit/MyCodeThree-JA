@@ -16,7 +16,7 @@ const mailsend = {
       from: mail.user,
       to: tomail.toEmail,
       subject: tomail.subject,
-      text: tomail.text,
+      html: tomail.text,
     };
     transpoter.sendMail(mailoption, (err, info) => {
       if (err) console.log(err);
