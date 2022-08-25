@@ -15,33 +15,15 @@ let temp = mysql.createConnection({
 
 const middleware = (req, res, next) => {
   const { access_token, refresh_token } = req.session;
-  if (jwt.verify(access_token, process.env.ACCESSTOKEN_SECRET)) {
-    next();
-  } else {
-    temp.query(
-      "select refresh from members where id = ?",
-      req.session.user_email,
-      (err, result) => {
-        if (err) console.log(err);
-        else if (result[0] == undefined) {
-          res.send("tokenfail");
-        } else {
-          if (jwt.verify(result[0].refresh, process.env.REFRESHTOKEN_SECRET)) {
-            req.session.access_token = jwt.sign(
-              {
-                user_email: req.session.user_email,
-              },
-              process.env.ACCESSTOKEN_SECRET,
-              {
-                expiresIn: "15m",
-                issuer: "gyeonghwan",
-              }
-            );
-          }
-        }
-      }
-    );
-  }
+  jwt.verify(access_token, process.env.ACCESSTOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      temp.query(
+        "select refresh from members where id = ?",
+        req.session.user_id,
+        (err, result) => {}
+      );
+    }
+  });
 };
 
 module.exports = middleware;
