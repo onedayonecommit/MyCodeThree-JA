@@ -16,7 +16,7 @@ const temp = mysql.createConnection({
   database: "test99",
 });
 
-// 로그인 요청 처리하는 곳
+/**  로그인 요청 처리하는 곳 */
 router.post("/login", (req, res) => {
   temp.query(
     "select pw from members where id = ?",
@@ -60,7 +60,7 @@ router.post("/login", (req, res) => {
   );
 });
 
-// 이메일 인증 하는 곳
+/** 이메일 인증 하는 곳 */
 router.post("/email", (req, res) => {
   const { email } = req.body;
   const authnumber = randomauth.randomfunc();
@@ -96,7 +96,7 @@ router.post("/email", (req, res) => {
   });
 });
 
-// 이메일 인증번호 확인 하는 곳
+/** 이메일 인증번호 확인 하는 곳 */
 router.post("/authcheck", (req, res) => {
   let authnumber = req.body.authnumber;
   if (
@@ -107,7 +107,7 @@ router.post("/authcheck", (req, res) => {
   else res.send("fail");
 });
 
-// 아이디 중복 확인 하는 곳
+/** 아이디 중복 확인 하는 곳 */
 router.post("/idcheck", (req, res) => {
   temp.query(
     "select id from members where id = ?",
@@ -122,7 +122,7 @@ router.post("/idcheck", (req, res) => {
   );
 });
 
-// 회원가입 요청 처리하는 곳
+/** 회원가입 요청 처리하는 곳*/
 router.post("/signup", (req, res) => {
   let { id, pw, email, authnumber } = req.body;
   if (

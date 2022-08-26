@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const middleware = require("./tokenmiddleware");
 router.use(session(Session));
 
-// 회원가입 당시 저장한 세션 초기화
+/** 회원가입 당시 저장한 세션 초기화 */
 router.get("/deletesession", (req, res) => {
   req.session.destroy(() => {
     req.session;
@@ -14,13 +14,13 @@ router.get("/deletesession", (req, res) => {
   res.redirect("/login");
 });
 
-// 회원가입 페이지
+/** 회원가입 페이지 */
 router.get("/signup", (req, res) => {
   res.render("signup");
   console.log(req.session);
 });
 
-// 로그인 페이지
+/** 로그인 페이지 */
 router.get("/login", (req, res) => {
   console.log(req.session);
   jwt.verify(
@@ -33,7 +33,8 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
-router.get("/loginafter", (req, res) => {
+/** 로그인 후 페이지 */
+router.get("/loginafter", middleware, (req, res) => {
   res.render("after");
 });
 
