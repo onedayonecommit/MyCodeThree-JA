@@ -8,18 +8,27 @@ app.use(session(Session));
 app.listen(8080, () => {
   console.log("server on");
 });
-app.get("/", (req, res) => {
-  jwt.verify(
-    req.session.token,
+
+app.get("/token", (req, res) => {
+  req.session.token = jwt.sign(
+    {
+      userid: "headsfjdsf",
+    },
     process.env.ACCESSTOKEN_SECRET,
-    (err, decoded) => {
-      try {
-        console.log(decoded);
-        res.send("없다");
-      } catch (err) {
-        console.log(err);
-        res.send("틀림");
-      }
+    {
+      expiresIn: "5s",
+      issuer: "gyeonghwan",
     }
   );
+  res.redirect("/");
+});
+
+app.get("/", (req, res) => {
+  console.log(req.session.token);
+  try {
+    jwt.verify(req.session.token, process.env.ACCESSTOKEN_SECRET);
+    res.send("suc");
+  } catch (error) {
+    res.send("fail");
+  }
 });
