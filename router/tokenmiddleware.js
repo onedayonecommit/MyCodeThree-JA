@@ -25,11 +25,15 @@ const middleware = (req, res, next) => {
         "select refresh from members where id = ? ",
         req.session.user_id,
         (err, result) => {
+          const id = jwt.verify(
+            result[0].refresh,
+            process.env.REFRESHTOKEN_SECRET
+          ).user_id;
           if (refreshtoken != result[0].refresh) res.send("tokenfail");
           else {
             req.session.accesstoken = jwt.sign(
               {
-                user_id: req.body.id,
+                user_id: id,
               },
               process.env.ACCESSTOKEN_SECRET,
               {
