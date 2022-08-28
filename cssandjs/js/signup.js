@@ -61,8 +61,11 @@ function emailauth() {
           break;
         case "fail":
           alert(
-            "인증번호가 다릅니다. 인증번호 확인 또는 재 발송 부탁드립니다."
+            "인증번호가 다릅니다. 인증번호 확인 또는 재 인증 부탁드립니다."
           );
+          break;
+        case "timeover":
+          alert("시간 초과 재 인증 바랍니다.");
           break;
         default:
           alert("예기치 못한 오류 발생 재 시도 부탁드립니다.");

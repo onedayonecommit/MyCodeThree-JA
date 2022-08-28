@@ -82,7 +82,7 @@ router.post("/email", (req, res) => {
       req.session.user_email = email;
       let sendmail = {
         toEmail: email,
-        subject: `안녕하세요 내코석 이메일 인증번호 입니다.`,
+        subject: `안녕하세요 내 코 석 이메일 인증번호 입니다.`,
         text: `${email} 님 반갑습니다. 이메일 인증번호는 <h1>${authnumber}</h1> 입니다. 인증번호 칸에 입력 후 인증 확인 부탁드립니다.`,
       };
       mailer.sendmail(sendmail);
@@ -99,12 +99,21 @@ router.post("/email", (req, res) => {
 /** 이메일 인증번호 확인 하는 곳 */
 router.post("/authcheck", (req, res) => {
   let authnumber = req.body.authnumber;
-  if (
-    req.session.mailauth == authnumber &&
-    jwt.verify(req.session.emailtoken, process.env.ACCESSTOKEN_SECRET)
-  )
-    res.send("suc");
-  else res.send("fail");
+  // if (
+  //   req.session.mailauth == authnumber &&
+  //   jwt.verify(req.session.emailtoken, process.env.ACCESSTOKEN_SECRET)
+  // )
+  //   res.send("suc");
+  // else res.send("fail");
+  jwt.verify(
+    req.session.emailtoken,
+    process.env.ACCESSTOKEN_SECRET,
+    (err, decoded) => {
+      if (err) res.send("timeover");
+      else if (req.session.mailauth == authnumber) res.send("suc");
+      else res.send("fail");
+    }
+  );
 });
 
 /** 아이디 중복 확인 하는 곳 */

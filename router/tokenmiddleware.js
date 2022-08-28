@@ -16,9 +16,10 @@ let temp = mysql.createConnection({
 const middleware = (req, res, next) => {
   const { accesstoken, refreshtoken } = req.session;
   try {
-    jwt.verify(accesstoken, process.env.ACCESSTOKEN_SECRET);
+    jwt.verify(accesstoken, process.env.ACCESSTOKEN_SECRET); // 어세스 토큰의 유효 여부
     next();
   } catch (error) {
+    // 어세스토큰이 없거나 유효기간이 지난 경우
     try {
       jwt.verify(refreshtoken, process.env.REFRESHTOKEN_SECRET);
       temp.query(
