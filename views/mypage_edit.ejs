@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../cssandjs/css/mypage_edit.css" />
+  </head>
+  <body>
+    <!-- 마이페이지 수정창 -->
+    <div class="container">
+      <div class="inner-container">
+        <div class="mypage-top">
+          <div class="title">마이페이지</div>
+          <div class="mypage"><%= data.id %></div>
+          <div class="mypage"><%= data.email %></div>
+          <div class="mypage"><%= data.phone %></div>
+        </div>
+        <div class="column-item">
+          <input type="password" class="password" placeholder="현재 비번" />
+          <input
+            type="password"
+            class="password"
+            placeholder="변경할 비밀번호"
+          />
+          <input
+            type="password"
+            class="password"
+            placeholder="변경할 비밀번호 재 입력"
+          />
+          <button class="save-btn">저장</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

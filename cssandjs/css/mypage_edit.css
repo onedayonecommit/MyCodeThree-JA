@@ -1,0 +1,65 @@
+* {
+  outline: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(181, 209, 199);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inner-container {
+  width: 400px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  border: 3px solid black;
+  background-color: blanchedalmond;
+}
+
+.mypage-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* text-align: center; */
+}
+
+.title {
+  font-size: 50px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.mypage {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.column-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.password {
+  width: 200px;
+  height: 30px;
+  padding-left: 7px;
+  margin-top: 20px;
+  border: 2px solid #5d57b8;
+}
+
+.save-btn {
+  width: 60px;
+  height: 30px;
+  margin-top: 50px;
+}
