@@ -129,6 +129,7 @@ router.post("/idcheck", (req, res) => {
       if (err) console.log(err);
       else if (result[0] == undefined) {
         req.session.user_id = req.body.id;
+        console.log(req.session);
         res.send("suc");
       } else res.send("fail");
     }

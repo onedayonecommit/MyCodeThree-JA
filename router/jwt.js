@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
-module.exports.atloginsign = async (id) => {
-  jwt.sign(
+module.exports.atloginsign = (id) => {
+  return jwt.sign(
     {
       user_id: id,
     },
@@ -12,8 +12,8 @@ module.exports.atloginsign = async (id) => {
     }
   );
 };
-module.exports.rtloginsign = async (id) => {
-  jwt.sign(
+module.exports.rtloginsign = (id) => {
+  return jwt.sign(
     {
       user_id: id,
     },
