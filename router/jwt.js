@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-module.exports.atloginsign = (id) => {
+module.exports.atloginsign = async (id) => {
   jwt.sign(
     {
       user_id: id,
@@ -12,7 +12,7 @@ module.exports.atloginsign = (id) => {
     }
   );
 };
-module.exports.rtloginsign = (id) => {
+module.exports.rtloginsign = async (id) => {
   jwt.sign(
     {
       user_id: id,
@@ -23,4 +23,8 @@ module.exports.rtloginsign = (id) => {
       issuer: "gyeonghwan",
     }
   );
+};
+
+module.exports.atverify = (token) => {
+  return jwt.verify(token, process.env.ACCESSTOKEN_SECRET);
 };

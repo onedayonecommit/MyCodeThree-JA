@@ -7,6 +7,7 @@ const router = express.Router();
 const mailer = require("./mailer");
 const randomauth = require("./randomauth");
 const jwt = require("jsonwebtoken");
+const jwtsign = require("./jwt");
 router.use(session(Session));
 
 const temp = mysql.createConnection({
@@ -27,27 +28,30 @@ router.post("/login", (req, res) => {
         result[0] != undefined &&
         bcrypt.compareSync(req.body.pw, result[0].pw)
       ) {
-        req.session.accesstoken = jwt.sign(
-          {
-            user_id: req.body.id,
-          },
-          process.env.ACCESSTOKEN_SECRET,
-          {
-            expiresIn: "15m",
-            issuer: "gyeonghwan",
-          }
-        );
-        const refreshtoken = jwt.sign(
-          {
-            user_id: req.body.id,
-          },
-          process.env.ACCESSTOKEN_SECRET,
-          {
-            expiresIn: "1h",
-            issuer: "gyeonghwan",
-          }
-        );
+        req.session.accesstoken = jwtsign.atloginsign(req.body.id);
+        // req.session.accesstoken = jwt.sign(
+        //   {
+        //     user_id: req.body.id,
+        //   },
+        //   process.env.ACCESSTOKEN_SECRET,
+        //   {
+        //     expiresIn: "15m",
+        //     issuer: "gyeonghwan",
+        //   }
+        // );
+        const refreshtoken = jwtsign.rtloginsign(req.body.id);
+        // const refreshtoken = jwt.sign(
+        //   {
+        //     user_id: req.body.id,
+        //   },
+        //   process.env.ACCESSTOKEN_SECRET,
+        //   {
+        //     expiresIn: "1h",
+        //     issuer: "gyeonghwan",
+        //   }
+        // );
         req.session.refreshtoken = refreshtoken;
+        console.log(refreshtoken);
         temp.query("update members set refresh = ? where id = ?", [
           refreshtoken,
           req.body.id,
