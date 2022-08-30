@@ -1,16 +1,14 @@
-"use strict";
-
 const Sequelize = require("sequelize");
-const config = require(__dirname + "/../config/config.json")[env];
+const config = require("../config/config");
 const db = {};
 
-let Mysql = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  config
+let sequelize = new Sequelize(
+  config.dev.database,
+  config.dev.username,
+  config.dev.password,
+  config.dev
 );
 
-db.Sequelize = Sequelize;
+db.sequelize = sequelize;
 
 module.exports = db;

@@ -6,6 +6,17 @@ const jwt = require("jsonwebtoken");
 const middleware = require("./tokenmiddleware");
 router.use(session(Session));
 
+/** 메인페이지 */
+router.get("/", (req, res) => {
+  res.render("start");
+  console.log(req.session);
+});
+
+/** 로그인 페이지 = (1) */
+router.get("/log", (req, res) => {
+  res.render("login");
+});
+
 /** 회원가입 당시 저장한 세션 초기화 */
 router.get("/deletesession", (req, res) => {
   req.session.destroy(() => {
@@ -38,4 +49,7 @@ router.get("/loginafter", middleware, (req, res) => {
   res.render("after");
 });
 
+router.get("/mypage", middleware, (req, res) => {
+  res.render("mypage_edit");
+});
 module.exports = router;

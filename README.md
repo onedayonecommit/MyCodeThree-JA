@@ -12,7 +12,7 @@ result[0] == undefined
 result == [
 {
 id:rudghks09,
-pw:rudghks110
+pw:뭐야
 }
 ]
 result == []

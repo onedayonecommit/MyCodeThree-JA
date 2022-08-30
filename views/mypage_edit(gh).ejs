@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="../cssandjs/css/mypage_edit.css" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   </head>
   <body>
     <!-- 마이페이지 수정창 -->
@@ -34,4 +35,22 @@
       </div>
     </div>
   </body>
+  <script>
+    window.onload(
+      $.ajax({
+        url: "/mypage",
+        type: "get",
+        data: {},
+        success: (data) => {
+          switch (data) {
+            case "tokenfail":
+              window.location = "/";
+              break;
+            default:
+              break;
+          }
+        },
+      })
+    );
+  </script>
 </html>
