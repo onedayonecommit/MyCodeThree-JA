@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const config = require("../config/config");
-const db = {};
+const User = require("./user");
 
 let sequelize = new Sequelize(
   config.dev.database,
@@ -9,6 +9,9 @@ let sequelize = new Sequelize(
   config.dev
 );
 
-db.sequelize = sequelize;
+const db = {};
 
+db.sequelize = sequelize;
+db.User = User;
+User.init(sequelize);
 module.exports = db;
