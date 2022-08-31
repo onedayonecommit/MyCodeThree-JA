@@ -28,7 +28,7 @@ class User extends Sequelize.Model {
           type: Sequelize.STRING(1000),
           allowNull: false,
         },
-        user_nickname: {
+        nickname: {
           type: Sequelize.STRING(1000),
           allowNull: false,
           unique: true,
@@ -67,6 +67,30 @@ class User extends Sequelize.Model {
         collate: "utf8_general_ci",
       }
     );
+  }
+  static associate(db) {
+    // 1:N 관계 (hasMany, belongsTo)
+    // sequelize에서 1:N 관계를 hasMany 함수로 정의한다.
+    // hasMany 함수를 이용해서 테이블 관계를 정의해준다.
+    // 첫번째 매개변수로 연결할 테이블
+    // sourceKey User테이블안에 무슨 키를 foreignKey와 연결할지
+    // hasMany()첫번째로 넘겨준 테이블이 foreignKey로 연결되고 foreignKey 이름은 user_id이다.
+    db.User.hasMany(db.Freeboard, {
+      foreignkey: "nickname",
+      sourceKey: "nickname",
+    });
+    db.User.hasMany(db.Reply, {
+      foreignkey: "nickname",
+      sourceKey: "nickname",
+    });
+    db.User.hasMany(db.Notice, {
+      foreignkey: "nickname",
+      sourceKey: "nickname",
+    });
+    db.User.hasMany(db.Reply_Reply, {
+      foreignkey: "nickname",
+      sourceKey: "nickname",
+    });
   }
 }
 

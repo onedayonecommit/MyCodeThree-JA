@@ -18,10 +18,10 @@ class Reply_Reply extends Sequelize.Model {
           type: Sequelize.STRING(1000),
           allowNull: false,
         },
-        nickname: {
-          type: Sequelize.STRING(1000),
-          allowNull: false,
-        },
+        // nickname: {
+        //   type: Sequelize.STRING(1000),
+        //   allowNull: false,
+        // },
       },
       {
         sequelize,
@@ -34,6 +34,12 @@ class Reply_Reply extends Sequelize.Model {
         collate: "utf8_general_ci",
       }
     );
+  }
+  static associate(db) {
+    db.Reply_Reply.belongsTo(db.User, {
+      foreignKey: "nickname",
+      targetKey: "nickname",
+    });
   }
 }
 

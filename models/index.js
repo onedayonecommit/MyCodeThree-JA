@@ -34,5 +34,9 @@ Notice.init(sequelize);
 User_inventory.init(sequelize);
 Skin.init(sequelize);
 
-console.log(db);
+User.associate(db);
+Reply.associate(db);
+Reply_Reply.associate(db);
+Notice.associate(db);
+Freeboard.associate(db);
 module.exports = db;

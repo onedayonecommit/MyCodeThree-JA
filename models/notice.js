@@ -18,11 +18,11 @@ class Notice extends Sequelize.Model {
           type: Sequelize.STRING(5000),
           allowNull: false,
         },
-        nickname: {
-          type: Sequelize.STRING(1000),
-          unique: true,
-          allowNull: false,
-        },
+        // nickname: {
+        //   type: Sequelize.STRING(1000),
+        //   unique: true,
+        //   allowNull: false,
+        // },
       },
       {
         sequelize,
@@ -35,6 +35,12 @@ class Notice extends Sequelize.Model {
         collate: "utf8_general_ci",
       }
     );
+  }
+  static associate(db) {
+    db.Notice.belongsTo(db.User, {
+      foreignKey: "nickname",
+      targetKey: "nickname",
+    });
   }
 }
 
