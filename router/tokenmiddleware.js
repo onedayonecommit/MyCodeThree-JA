@@ -30,7 +30,7 @@ const middleware = (req, res, next) => {
             result[0].refresh,
             process.env.REFRESHTOKEN_SECRET
           ).user_id;
-          if (refreshtoken != result[0].refresh) res.send("tokenfail");
+          if (refreshtoken != result[0].refresh) res.redirect("/login");
           else {
             req.session.accesstoken = jwt.sign(
               {
@@ -47,7 +47,7 @@ const middleware = (req, res, next) => {
         }
       );
     } catch (error) {
-      res.send("tokenfail");
+      res.redirect("/login");
     }
   }
 };
@@ -80,4 +80,58 @@ const middleware = (req, res, next) => {
 //   });
 // };
 
+const middleware1 = (req, res, next) => {
+  // session에서 로그인시 발급된 토큰 가져오기
+  const { access_token, refresh_token } = req.session;
+
+  // acc_tok 검증
+  jwt.verify(access_token, process.env.ACCESS_TOKEN, (err, acc_decoded) => {
+    if (err) {
+      // acc_tok 유효기간 지났을 경우 ref_tok 검증
+      jwt.verify(
+        refresh_token,
+        process.env.REFRESH_TOKEN,
+        (err, ref_decoded) => {
+          // ref_tok 만료된 경우
+          if (err) {
+            res.redirect("/");
+          } else {
+            // ref_tok 존재하여 해당 email 찾아 acc_tok 재발급
+            User.findOne({ where: { email: ref_decoded.email } })
+              .then((e) => {
+                if (e?.refresh == refresh_token) {
+                  const accessToken = jwt.sign(
+                    {
+                      email: ref_decoded.email,
+                      name: ref_decoded.name,
+                    },
+                    process.env.ACCESS_TOKEN,
+                    {
+                      expiresIn: "5m",
+                      issuer: "ksh",
+                    }
+                  );
+
+                  req.session.access_token = accessToken;
+                  // acc_tok 재발급하여 로그인 유지
+                  next();
+                } else {
+                  // tok 전부 만료되어 다시 로그인
+                  res.redirect("/log");
+                }
+              })
+              .catch((err) => {
+                res.send(err);
+              });
+          }
+        }
+      );
+    } else {
+      // acc_tok 유효하여 로그인 유지
+      next();
+    }
+  });
+};
+
 module.exports = middleware;
+module.exports = middleware1;

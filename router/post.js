@@ -8,6 +8,7 @@ const mailer = require("./mailer");
 const randomauth = require("./randomauth");
 const jwt = require("jsonwebtoken");
 const jwtsign = require("./jwt");
+const { user } = require("../config/mail");
 router.use(session(Session));
 
 const temp = mysql.createConnection({

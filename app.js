@@ -11,7 +11,7 @@ app.use(get);
 app.use(post);
 
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log("db connected");
   })

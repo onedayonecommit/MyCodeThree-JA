@@ -11,25 +11,25 @@ class User extends Sequelize.Model {
           type: Sequelize.INTEGER,
         },
         user_id: {
-          type: Sequelize.STRING(100),
+          type: Sequelize.STRING(1000),
           allowNull: false,
           unique: true,
         },
-        eamil: {
-          type: Sequelize.STRING(50),
+        user_eamil: {
+          type: Sequelize.STRING(1000),
           allowNull: false,
           unique: true,
         },
-        phone: {
-          type: Sequelize.STRING(30),
+        user_phone: {
+          type: Sequelize.STRING(1000),
           allowNull: false,
         },
-        name: {
-          type: Sequelize.STRING(50),
+        user_name: {
+          type: Sequelize.STRING(1000),
           allowNull: false,
         },
-        nickname: {
-          type: Sequelize.STRING(50),
+        user_nickname: {
+          type: Sequelize.STRING(1000),
           allowNull: false,
           unique: true,
         },
@@ -39,15 +39,15 @@ class User extends Sequelize.Model {
           defaultValue: 0,
         },
         refresh: {
-          type: Sequelize.STRING(300),
+          type: Sequelize.STRING(1000),
           allowNull: true,
         },
-        password: {
-          type: Sequelize.STRING(300),
+        user_password: {
+          type: Sequelize.STRING(1000),
           allowNull: false,
         },
-        socket_id: {
-          type: Sequelize.STRING(300),
+        user_socket_id: {
+          type: Sequelize.STRING(1000),
           allowNull: true,
         },
         cash_point: {
