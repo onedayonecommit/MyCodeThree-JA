@@ -6,6 +6,8 @@ const Reply_Reply = require("./reply-reply");
 const Freeboard = require("./freeboard");
 const Notice = require("./notice");
 const User_inventory = require("./user_inventory");
+const Skin = require("./skin");
+
 let sequelize = new Sequelize(
   config.dev.database,
   config.dev.username,
@@ -22,6 +24,7 @@ db.Reply_Reply = Reply_Reply;
 db.Freeboard = Freeboard;
 db.Notice = Notice;
 db.User_inventory = User_inventory;
+db.Skin = Skin;
 
 User.init(sequelize);
 Reply.init(sequelize);
@@ -29,6 +32,7 @@ Reply_Reply.init(sequelize);
 Freeboard.init(sequelize);
 Notice.init(sequelize);
 User_inventory.init(sequelize);
+Skin.init(sequelize);
 
 console.log(db);
 module.exports = db;
