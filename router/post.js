@@ -30,27 +30,7 @@ router.post("/login", (req, res) => {
         bcrypt.compareSync(req.body.pw, result[0].pw)
       ) {
         req.session.accesstoken = jwtsign.atloginsign(req.body.id);
-        // req.session.accesstoken = jwt.sign(
-        //   {
-        //     user_id: req.body.id,
-        //   },
-        //   process.env.ACCESSTOKEN_SECRET,
-        //   {
-        //     expiresIn: "15m",
-        //     issuer: "gyeonghwan",
-        //   }
-        // );
         const refreshtoken = jwtsign.rtloginsign(req.body.id);
-        // const refreshtoken = jwt.sign(
-        //   {
-        //     user_id: req.body.id,
-        //   },
-        //   process.env.ACCESSTOKEN_SECRET,
-        //   {
-        //     expiresIn: "1h",
-        //     issuer: "gyeonghwan",
-        //   }
-        // );
         req.session.refreshtoken = refreshtoken;
         console.log(refreshtoken);
         temp.query("update members set refresh = ? where id = ?", [

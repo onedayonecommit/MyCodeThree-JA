@@ -36,6 +36,7 @@ class Notice extends Sequelize.Model {
       }
     );
   }
+
   static associate(db) {
     db.Notice.belongsTo(db.User, {
       foreignKey: "nickname",

@@ -75,22 +75,22 @@ class User extends Sequelize.Model {
     // 첫번째 매개변수로 연결할 테이블
     // sourceKey User테이블안에 무슨 키를 foreignKey와 연결할지
     // hasMany()첫번째로 넘겨준 테이블이 foreignKey로 연결되고 foreignKey 이름은 user_id이다.
-    db.User.hasMany(db.Freeboard, {
-      foreignkey: "nickname",
-      sourceKey: "nickname",
-    });
-    db.User.hasMany(db.Reply, {
-      foreignkey: "nickname",
-      sourceKey: "nickname",
-    });
-    db.User.hasMany(db.Notice, {
-      foreignkey: "nickname",
-      sourceKey: "nickname",
-    });
-    db.User.hasMany(db.Reply_Reply, {
-      foreignkey: "nickname",
-      sourceKey: "nickname",
-    });
+    // db.User.hasMany(db.Freeboard, {
+    //   foreignkey: "nickname",
+    //   sourceKey: "nickname",
+    // });
+    // db.User.hasMany(db.Reply, {
+    //   foreignkey: "nickname",
+    //   sourceKey: "nickname",
+    // });
+    // db.User.hasMany(db.Notice, {
+    //   foreignkey: "nickname",
+    //   sourceKey: "nickname",
+    // });
+    // db.User.hasMany(db.Reply_Reply, {
+    //   foreignkey: "nickname",
+    //   sourceKey: "nickname",
+    // });
   }
 }
 
