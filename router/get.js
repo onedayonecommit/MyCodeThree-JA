@@ -70,6 +70,25 @@ router.get("/loginafter", middleware, (req, res) => {
   res.render("after");
 });
 
+/** (1), acc_tok 확인하여 로그인 유지 (middleware 수행) */
+router.get("/keep", middleware, (req, res) => {
+  // acc_tok 검증하여 해당 email 변수 담기
+  let email = jwt.verify(
+    req.session.access_token,
+    process.env.ACCESS_TOKEN,
+    (err, result) => {
+      return result.email;
+    }
+  );
+  // 담은 변수를 render page에 정보 보내기
+  User.findOne({ where: { email: email } }).then((e) => {
+    let name = e.name;
+    res.render("login(keep)", {
+      id: name,
+    });
+  });
+});
+
 router.get("/mypage", middleware, (req, res) => {
   res.render("mypage_edit");
 });

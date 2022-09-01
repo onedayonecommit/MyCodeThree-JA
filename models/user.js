@@ -15,7 +15,7 @@ class User extends Sequelize.Model {
           allowNull: false,
           unique: true,
         },
-        user_eamil: {
+        user_email: {
           type: Sequelize.STRING(1000),
           allowNull: false,
           unique: true,

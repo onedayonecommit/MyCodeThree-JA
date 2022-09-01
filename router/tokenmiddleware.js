@@ -13,44 +13,44 @@ let temp = mysql.createConnection({
   password: process.env.DB_PASSWORD,
 });
 
-const middleware = (req, res, next) => {
-  const { accesstoken, refreshtoken } = req.session;
-  try {
-    jwt.verify(accesstoken, process.env.ACCESSTOKEN_SECRET); // 어세스 토큰의 유효 여부
-    next();
-  } catch (error) {
-    // 어세스토큰이 없거나 유효기간이 지난 경우
-    try {
-      jwt.verify(refreshtoken, process.env.REFRESHTOKEN_SECRET);
-      temp.query(
-        "select refresh from members where id = ? ",
-        req.session.user_id,
-        (err, result) => {
-          const id = jwt.verify(
-            result[0].refresh,
-            process.env.REFRESHTOKEN_SECRET
-          ).user_id;
-          if (refreshtoken != result[0].refresh) res.redirect("/login");
-          else {
-            req.session.accesstoken = jwt.sign(
-              {
-                user_id: id,
-              },
-              process.env.ACCESSTOKEN_SECRET,
-              {
-                expiresIn: "15m",
-                issuer: "gyeonghwan",
-              }
-            );
-            next();
-          }
-        }
-      );
-    } catch (error) {
-      res.redirect("/login");
-    }
-  }
-};
+// const middleware = (req, res, next) => {
+//   const { accesstoken, refreshtoken } = req.session;
+//   try {
+//     jwt.verify(accesstoken, process.env.ACCESSTOKEN_SECRET); // 어세스 토큰의 유효 여부
+//     next();
+//   } catch (error) {
+//     // 어세스토큰이 없거나 유효기간이 지난 경우
+//     try {
+//       jwt.verify(refreshtoken, process.env.REFRESHTOKEN_SECRET);
+//       temp.query(
+//         "select refresh from members where id = ? ",
+//         req.session.user_id,
+//         (err, result) => {
+//           const id = jwt.verify(
+//             result[0].refresh,
+//             process.env.REFRESHTOKEN_SECRET
+//           ).user_id;
+//           if (refreshtoken != result[0].refresh) res.redirect("/login");
+//           else {
+//             req.session.accesstoken = jwt.sign(
+//               {
+//                 user_id: id,
+//               },
+//               process.env.ACCESSTOKEN_SECRET,
+//               {
+//                 expiresIn: "15m",
+//                 issuer: "gyeonghwan",
+//               }
+//             );
+//             next();
+//           }
+//         }
+//       );
+//     } catch (error) {
+//       res.redirect("/login");
+//     }
+//   }
+// };
 
 /**토큰 유효성 검사 미들웨어 */
 // const middleware = (req, res, next) => {
@@ -80,7 +80,7 @@ const middleware = (req, res, next) => {
 //   });
 // };
 
-const middleware1 = (req, res, next) => {
+const middleware = (req, res, next) => {
   // session에서 로그인시 발급된 토큰 가져오기
   const { access_token, refresh_token } = req.session;
 
@@ -134,4 +134,3 @@ const middleware1 = (req, res, next) => {
 };
 
 module.exports = middleware;
-module.exports = middleware1;
