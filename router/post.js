@@ -12,13 +12,6 @@ const { user } = require("../config/mail");
 const { User } = require("../models");
 router.use(session(Session));
 
-// const temp = mysql.createConnection({
-//   user: "root",
-//   password: process.env.DB_PASSWORD,
-//   host: "localhost",
-//   database: "test99",
-// });
-
 /**  로그인 요청 처리하는 곳 */
 router.post("/login", (req, res) => {
   const { id, pw } = req.body;
@@ -73,29 +66,6 @@ router.post("/login", (req, res) => {
     .catch((err) => {
       res.send(err);
     });
-  // temp.query(
-  //   "select pw from members where id = ?",
-  //   req.body.id,
-  //   (err, result) => {
-  //     if (result[0] == undefined) res.send("noneid");
-  //     else if (
-  //       result[0] != undefined &&
-  //       bcrypt.compareSync(req.body.pw, result[0].pw)
-  //     ) {
-  //       req.session.accesstoken = jwtsign.atloginsign(req.body.id);
-  //       const refreshtoken = jwtsign.rtloginsign(req.body.id);
-  //       req.session.refreshtoken = refreshtoken;
-  //       console.log(refreshtoken);
-  //       temp.query("update members set refresh = ? where id = ?", [
-  //         refreshtoken,
-  //         req.body.id,
-  //       ]);
-  //       res.send("suc");
-  //     } else if (!bcrypt.compareSync(req.body.pw, result[0].pw)) {
-  //       res.send("fail");
-  //     }
-  //   }
-  // );
 });
 
 /** 이메일 인증 하는 곳 */
@@ -122,113 +92,194 @@ router.post("/email", (req, res) => {
         text: `${email} 님 반갑습니다. 이메일 인증번호는 <h1>${authnumber}</h1> 입니다. 인증번호 칸에 입력 후 인증 확인 부탁드립니다.`,
       };
       mailer.sendmail(sendmail);
-      req.session.mailauth = authnumber;
-      res.send("suc");
+      req.session.user_auth_number = authnumber;
+      res.send("usable");
     } else if (e != null) {
-      res.send("fail");
+      res.send("disusable");
     } else {
       res.send("failed");
     }
   });
-  // temp.query("select * from members where email = ?", email, (err, result) => {
-  //   if (err) {
-  //     console.log("qserr", err);
-  //   } else if (result[0] == undefined) {
-  //     req.session.emailtoken = jwt.sign(
-  //       {
-  //         user_email: email,
-  //       },
-  //       process.env.ACCESSTOKEN_SECRET,
-  //       {
-  //         expiresIn: "5m",
-  //         issuer: "gyeonghwan",
-  //       }
-  //     );
-  //     req.session.user_email = email;
-  //     let sendmail = {
-  //       toEmail: email,
-  //       subject: `안녕하세요 내 코 석 이메일 인증번호 입니다.`,
-  //       text: `${email} 님 반갑습니다. 이메일 인증번호는 <h1>${authnumber}</h1> 입니다. 인증번호 칸에 입력 후 인증 확인 부탁드립니다.`,
-  //     };
-  //     mailer.sendmail(sendmail);
-  //     req.session.mailauth = authnumber;
-  //     res.send("suc");
-  //   } else if (result[0] != undefined) {
-  //     res.send("fail");
-  //   } else {
-  //     res.send("failed");
-  //   }
-  // });
 });
 
 /** 이메일 인증번호 확인 하는 곳 */
 router.post("/authcheck", (req, res) => {
   let authnumber = req.body.authnumber;
-  // if (
-  //   req.session.mailauth == authnumber &&
-  //   jwt.verify(req.session.emailtoken, process.env.ACCESSTOKEN_SECRET)
-  // )
-  //   res.send("suc");
-  // else res.send("fail");
   jwt.verify(
     req.session.emailtoken,
     process.env.ACCESSTOKEN_SECRET,
     (err, decoded) => {
       if (err) res.send("timeover");
-      else if (req.session.mailauth == authnumber) res.send("suc");
+      else if (req.session.user_auth_number == authnumber) res.send("suc");
       else res.send("fail");
     }
   );
 });
 
 /** 아이디 중복 확인 하는 곳 */
-router.post("/idcheck", (req, res) => {
+router.post("/userIdCheck", (req, res) => {
   User.findOne({ where: { user_id: req.body.id } }).then((e) => {
     if (e == null) {
       req.session.user_id = req.body.id;
       console.log(req.session);
-      res.send("suc");
+      res.send("usable");
     } else {
-      res.send("fail");
+      res.send("disuable");
     }
   });
-  // temp.query(
-  //   "select id from members where id = ?",
-  //   req.body.id,
-  //   (err, result) => {
-  //     if (err) console.log(err);
-  //     else if (result[0] == undefined) {
-  //       req.session.user_id = req.body.id;
-  //       console.log(req.session);
-  //       res.send("suc");
-  //     } else res.send("fail");
-  //   }
-  // );
+});
+
+/** 닉네임 중복 확인 하는 곳 */
+router.post("/nickCheck", (req, res) => {
+  User.findOne({ where: { nickname: req.body.user_nickname } }).then((e) => {
+    if (e == null) {
+      req.session.user_nickname = req.body.user_nickname;
+      res.send("usable");
+    } else if (e != null) res.send("disusable");
+  });
 });
 
 /** 회원가입 요청 처리하는 곳*/
 router.post("/signup", (req, res) => {
-  let { id, email, authnumber, nickname, name, password, phone } = req.body;
+  let { id, email, authnumber, nickname, name, password, password_a, phone } =
+    req.body;
+  console.log(req.body.password, req.body.password_a);
   if (
-    req.session.user_email == email &&
-    req.session.user_id == id &&
-    req.session.mailauth == authnumber
+    id != "" &&
+    email != "" &&
+    authnumber != "" &&
+    nickname != "" &&
+    name != "" &&
+    password != "" &&
+    phone != ""
   ) {
-    bcrypt.hash(pw, 10, (err, pw) => {
-      temp.query(
-        "insert into members (id,pw,email) values (?,?,?)",
-        [id, pw, email],
-        (err, result) => {
-          if (err) console.log(err);
-          else {
-            res.send("suc");
-          }
-        }
-      );
-    });
+    if (
+      req.session.user_email == email &&
+      req.session.user_id == id &&
+      req.session.user_auth_number == authnumber &&
+      req.session.user_nickname == nickname &&
+      password == password_a
+    ) {
+      bcrypt.hash(password, 10, (err, pw) => {
+        User.create({
+          user_id: id,
+          user_email: email,
+          nickname: nickname,
+          user_phone: phone,
+          user_name: name,
+          user_password: pw,
+        });
+        res.send("success");
+      });
+    } else {
+      res.send("fail");
+    }
   } else {
-    res.send("fail");
+    res.send("notnull");
   }
 });
+
+/** 아이디 찾을 때 이메일 인증받기 */
+router.post("/findemail", (req, res) => {
+  const email = req.body.email;
+  const authnumber = randomauth.randomfunc();
+  console.log(authnumber);
+  User.findOne({ where: { user_email: req.body.email } }).then((e) => {
+    if (e == null) res.send("notemail");
+    else {
+      req.session.user_email = req.body.email;
+      req.session.emailtoken = jwt.sign(
+        {
+          user_email: email,
+        },
+        process.env.ACCESSTOKEN_SECRET,
+        {
+          expiresIn: "5m",
+          issuer: "gyeonghwan",
+        }
+      );
+      let sendmail = {
+        toEmail: email,
+        subject: `안녕하세요 내 코 석 이메일 인증번호 입니다.`,
+        text: `${email} 님 반갑습니다. 이메일 인증번호는 <h1>${authnumber}</h1> 입니다. 인증번호 칸에 입력 후 인증 확인 부탁드립니다.`,
+      };
+      mailer.sendmail(sendmail);
+      req.session.user_auth_number = authnumber;
+      res.send("success");
+    }
+  });
+});
+
+/** 패스워드 변경 */
+router.post("/findpw", (req, res) => {
+  const { id, email, authnumber, name, phone } = req.body;
+  if (
+    id != "" &&
+    email != "" &&
+    authnumber != "" &&
+    name != "" &&
+    phone != ""
+  ) {
+    if (
+      req.session.user_auth_number == authnumber &&
+      req.session.user_email == email
+    ) {
+      req.session.findpwtoken = jwt.sign(
+        {
+          user_email: email,
+          name: name,
+        },
+        process.env.FINDPWTOKEN,
+        {
+          expiresIn: "5m",
+          issuer: "gh",
+        }
+      );
+      res.send("success");
+    } else {
+      res.send("fail");
+    }
+  } else {
+    res.send("notnull");
+  }
+});
+
+router.post("/finalchangepw", (req, res) => {
+  const { user_pw, user_pw_a } = req.body;
+  if (user_pw != user_pw_a) res.send("failpw");
+  else if (user_pw == user_pw_a) {
+    jwt.verify(
+      req.session.findpwtoken,
+      process.env.FINDPWTOKEN,
+      (err, decoded) => {
+        if (err) res.send("timeover");
+        else if (decoded) {
+          bcrypt.hash(user_pw, 10, (err, result) => {
+            User.update(
+              { user_password: result },
+              { where: { user_email: decoded.user_email } }
+            );
+          });
+          req.session.destroy(() => {
+            req.session;
+          });
+          res.send("success");
+        }
+      }
+    );
+  }
+});
+
+/** 이메일 인증 후 패스워드 변경 할 페이지 */
+// router.post("/changepwhurryup", (req, res) => {
+//   jwt.verify(
+//     req.session.findpwtoken,
+//     process.env.FINDPWTOKEN,
+//     (err, decoded) => {
+//       if (err) res.send("timeover");
+//       else res.render("pwchange");
+//     }
+//   );
+// });
 
 module.exports = router;

@@ -29,8 +29,17 @@ router.get("/find", (req, res) => {
 });
 
 /** 비밀번호 재설정 페이지 = (4) */
-router.get("/pwchange", middleware, (req, res) => {
-  res.render("pwchange");
+router.get("/changepw", (req, res) => {
+  jwt.verify(
+    req.session.findpwtoken,
+    process.env.FINDPWTOKEN,
+    (err, decoded) => {
+      if (err) res.redirect("/find");
+      else if (decoded) {
+        res.render("pwchange", { name: decoded.name });
+      }
+    }
+  );
 });
 
 /** 이메일 찾기 페이지 = (3-1) */
@@ -40,6 +49,7 @@ router.get("/findEmail", (req, res) => {
 
 /** 회원가입 당시 저장한 세션 초기화 */
 router.get("/deletesession", (req, res) => {
+  console.log(req.session);
   req.session.destroy(() => {
     req.session;
   });

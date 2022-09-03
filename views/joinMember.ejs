@@ -31,7 +31,7 @@
             maxlength="30"
           />
           <!-- 아이디 중복확인 btn-->
-          <button id="checkBtn" class="checkbtn_disable" disabled>중복확인</button>
+          <button id="checkBtn" onclick="checkBtn()" class="checkbtn_disable" disabled>중복확인</button>
         </div>
         <!-- 아이디 정규식에 맞게 작성되었는지 check -->
         <div class="userIdcheck textStart"></div>
@@ -39,9 +39,9 @@
         <!-- 이메일 -->
         <!-- 정규식만 받은 상태 -->
         <div class="content">
-          <input type="email" placeholder="이메일" id="id" name="email" class="id" maxlength="30" />
+          <input type="email" placeholder="이메일" id="user_email" name="email" class="id" maxlength="30" />
           <!-- 인증번호 받기 btn-->
-          <button id="email_ctf_btn" class="checkbtn_disable3" disabled>인증번호 발송</button>
+          <button id="email_ctf_btn" class="checkbtn_disable3" onclick="checkEmail()" >인증번호 발송</button>
         </div>
         <!-- 이메일 정규식에 맞게 작성되었는지 check -->
         <div class="emailcheck textStart"></div>
@@ -53,9 +53,10 @@
           placeholder="인증번호"
           class="id"
           maxlength="30"
+          id="auth_number"
           />
           <!-- 인증번호 검사 버튼 -->
-          <button id="" class="checkbtn_disable4">인증번호 확인</button>
+          <button id="" class="checkbtn_disable4" onclick="checkAuth()">인증번호 확인</button>
         </div>
 
         <!-- 닉네임 -->
@@ -63,13 +64,13 @@
           <input
           type="text"
           placeholder="닉네임"
-          id="nickName"
+          id="user_nickname"
           name="nickName"
           class="id"
           maxlength="30"
           />
           <!-- 닉네임 중복확인 -->
-          <button id="checkBtn_nick" class="checkbtn_disable2" disabled>중복확인</button>
+          <button id="checkBtn_nick" onclick="checkNick()" class="checkbtn_disable2">중복확인</button>
         </div>
         <!-- 닉네임 정규식에 맞게 작성되었는지 check -->
         <div class="nickcheck textStart"></div>
@@ -79,7 +80,7 @@
         <input
           type="text"
           placeholder="이름"
-          id="name"
+          id="user_name"
           name="name"
           class="id"
           maxlength="10"
@@ -93,7 +94,7 @@
           <input
           type="password"
           placeholder="비밀번호"
-          id="password"
+          id="user_password"
           name="password"
           class="id"
           maxlength="30"
@@ -107,7 +108,7 @@
           <input
             type="password"
             placeholder="비밀번호 확인"
-            id="password_a"
+            id="user_password_a"
             name="cpassword"
             class="id"
             maxlength="30"
@@ -121,7 +122,7 @@
           <input
             type="text"
             placeholder="연락처(- 없이 입력)"
-            id="phoneNum"
+            id="user_phonenum"
             name="phone"
             class="phoneNum"
             maxlength="20"
@@ -134,7 +135,7 @@
           <button
             type="submit"
             class="btn"
-            disabled="disabled"
+            onclick="signup()"
           >
             회원가입 완료
           </button>
@@ -145,97 +146,69 @@
       let idAble = 0;
       let nickAble = 0;
       // user_id 중복확인 버튼 클릭시 이벤트
-      document.querySelector('#checkBtn').onclick =function(e) {
-        e.preventDefault()
-        
-        // user_id 값 변수 담기
-        let _iduse = document.querySelector("#user_id");
-        // database에 해당 user_id 찾기 위해 서버로 값 전송
+      const checkBtn = ()=>{
         $.ajax({
-          url: "/userIdCheck", // /abc라면 메인 홈페이지 / 에서 보낸 값은 /abc 경로에 담기는 개념
-          type: "post",
-          data: {
-            user_id: _iduse.value,
-          },
-          success: function (data) {
-            //console.log(data);
-            if (data == "usable") {
-              if (
-                confirm(
-                  "사용 가능합니다. " +
-                    " 사용 하시겠습니까? \n예 누를 시 수정 불가"
-                ) == true
-              ) {
-                _iduse.readOnly = true;
-                document
-                  .querySelector("#hidden_id")
-                  //.setAttribute("value", check);
-              }
-              idAble = 1;
-            } else if (data == "disusable") {
-              alert("이미 존재하는 아이디 입니다.");
-              idAble = 0;
-              // document.querySelector(".btn").disabled = true;
-              document.querySelector(".userIdcheck").innerHTML =
-            "이미 존재하는 아이디 입니다.";
-            } else {
-              alert("잘못된 요청입니다.");
-              idAble = 0;
-            }
-          },
-        });
+          url:"/userIdCheck",
+          type:"post",
+          data:{
+            id: user_id.value
+          },success: (data)=>{
+            if(data == "usable") alert("사용 가능")
+            else if(data == "disuable") alert("사용 불가")
+          }
+      })
       }
         // nickName 중복확인 버튼 클릭시 이벤트
-        document.querySelector('#checkBtn_nick').onclick =function(e) {
-        e.preventDefault()
-        
-        // user_id 값 변수 담기
-        let _nickuse = document.querySelector("#nickName");
-        // database에 해당 user_id 찾기 위해 서버로 값 전송
-        $.ajax({
-          url: "/nickCheck", // /abc라면 메인 홈페이지 / 에서 보낸 값은 /abc 경로에 담기는 개념
-          type: "post",
-          data: {
-            nickName: _nickuse.value,
-          },
-          success: function (data) {
-            //console.log(data);
-            if (data == "usable") {
-              if (
-                confirm(
-                  "사용 가능합니다. " +
-                    " 사용 하시겠습니까? \n예 누를 시 수정 불가"
-                ) == true
-              ) {
-                _nickuse.readOnly = true;
-                document
-                  .querySelector("#hidden_id")
-                  //.setAttribute("value", check);
-              }
-              nickAble = 1;
-            } else if (data == "disusable") {
-              alert("이미 존재하는 아이디 입니다.");
-              nickAble = 0;
-              // document.querySelector(".btn").disabled = true;
-              document.querySelector(".nickcheck").innerHTML =
-            "이미 존재하는 아이디 입니다.";
-            } else {
-              alert("잘못된 요청입니다.");
-              nickAble = 0;
+        const checkNick = ()=>{
+          $.ajax({
+            url:"/nickCheck",
+            type:"post",
+            data:{
+              user_nickname : user_nickname.value
+            },success: (data)=>{
+              if (data == "usable") alert("사용 가능합니다.")
+              else if(data == "disusable") alert("사용 불가합니다 다른 닉네임 사용하시오")
             }
-          },
-        });
-      }
+          })
+        }
+        const checkEmail = ()=>{
+          $.ajax({
+            url:"/email",
+            type:"post",
+            data:{
+              email : user_email.value
+            },success: (data)=>{
+              if (data == "usable") alert('인증번호 발송 완료 메일을 수신받지 못한 경우 스팸메일함 확인 또는 고객센터 문의 요망')
+              else if (data == 'disusable') alert("이미 가입된 이메일로 확인, 다른 이메일 사용 하세요")
+              else alert("예기치 못한 오류 발생 재 시도 부탁")
+            }
+          })
+        }
+        const checkAuth = ()=>{
+          $.ajax({
+            url:"/authcheck",
+            type:"post",
+            data:{
+              authnumber: auth_number.value
+            },success:(data)=>{
+              if(data == "timeover") {
+                auth_number.value = ""
+                alert("요청시간이 초과되었습니다 재 인증 부탁드립니다.")
+              } else if(data == "suc") alert("인증 확인되었습니다.")
+              else if (data == "fail") alert("잘못된 인증번호 입니다. 인증번호 확인 부탁드립니다.")
+            }
+          })
+        }
       // a ~ e = 1 의 조건이 만족되어야 회원가입 버튼 활성화
       // 0으로 변수 선언
-      let a = 0;
-      let b = 0;
-      let c = 0;
-      let d = 0;
-      let e = 0;
-      let f = 0;
-      let g = 0;
-      let sum_ = a + b + c + d + e + f + g;
+      // let a = 0;
+      // let b = 0;
+      // let c = 0;
+      // let d = 0;
+      // let e = 0;
+      // let f = 0;
+      // let g = 0;
+      // let sum_ = a + b + c + d + e + f + g;
       // 아이디 정규식
       document.querySelector('#user_id').onkeyup = function() {
         let user_id = this.value;
@@ -263,7 +236,7 @@
       };
       
       //이메일 정규식
-      document.querySelector("#id").onkeyup = function () {
+      document.querySelector("#user_email").onkeyup = function () {
         let id = this.value;
         let idreg =
         /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/g;
@@ -290,7 +263,7 @@
         };
         
         //비밀번호 정규식
-        document.querySelector("#password").onkeyup = function () {
+        document.querySelector("#user_password").onkeyup = function () {
           let password = this.value;
           let passwordreg =
           /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,15}$/g;
@@ -310,10 +283,10 @@
           }
         };
         //비밀번호 확인 정규식
-        document.querySelector("#password_a").onkeyup = function () {
+        document.querySelector("#user_password_a").onkeyup = function () {
           let password_a = this.value;
           //정규식 Pass
-          if (password_a == password.value) {
+          if (password_a == user_password.value) {
             document.querySelector(".passwordre").innerHTML = "";
             d = 1;
         //정규식 fail
@@ -328,32 +301,32 @@
       }
     };
     // 닉네임 정규식
-    document.querySelector('#nickName').onkeyup = function() {
-      let nickName = this.value;
-      let nickNameReg = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,20}$/g;
+    // document.querySelector('#user_nickName').onkeyup = function() {
+    //   let nickName = this.value;
+    //   let nickNameReg = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,20}$/g;
         
-      if (nickNameReg.test(nickName)) {
-          document.querySelector('.nickcheck').innerHTML = "";
-          document.querySelector('.checkbtn_disable2').disabled = false;
-          document.querySelector('.checkbtn_disable2').classList.add('checkbtn_able2');
-          e = 1;
-        // 정규식 fail
-        } else if (nickName == "") {
-        document.querySelector(".nickcheck").innerHTML = "";
-        document.querySelector(".checkbtn_disable2").disablsed = true;
-        document.querySelector(".checkbtn_disable2").classList.remove("checkbtn_able2");
-        e = 0;
-      //정규식 fail
-      } else {
-        document.querySelector(".nickcheck").innerHTML =
-          "4자 이상 입력해주세요."
-          document.querySelector(".checkbtn_disable2").disabled = true;
-          document.querySelector(".checkbtn_disable2").classList.remove("checkbtn_able2");
-        e = 0;
-      }
-    };
+    //   if (nickNameReg.test(nickName)) {
+    //       document.querySelector('.nickcheck').innerHTML = "";
+    //       document.querySelector('.checkbtn_disable2').disabled = false;
+    //       document.querySelector('.checkbtn_disable2').classList.add('checkbtn_able2');
+    //       e = 1;
+    //     // 정규식 fail
+    //     } else if (nickName == "") {
+    //     document.querySelector(".nickcheck").innerHTML = "";
+    //     document.querySelector(".checkbtn_disable2").disablsed = true;
+    //     document.querySelector(".checkbtn_disable2").classList.remove("checkbtn_able2");
+    //     e = 0;
+    //   //정규식 fail
+    //   } else {
+    //     document.querySelector(".nickcheck").innerHTML =
+    //       "4자 이상 입력해주세요."
+    //       document.querySelector(".checkbtn_disable2").disabled = true;
+    //       document.querySelector(".checkbtn_disable2").classList.remove("checkbtn_able2");
+    //     e = 0;
+    //   }
+    // };
     //이름 정규식
-    document.querySelector("#name").onkeyup = function () {
+    document.querySelector("#user_name").onkeyup = function () {
       let name = this.value;
       let namereg = /^[가-힣]{2,6}$/g;
       //정규식 Pass
@@ -371,59 +344,30 @@
           f = 0;
         }
       };
-      //핸드폰 정규식
-      document.querySelector("#phoneNum").onkeyup = function () {
-        let phoneNum = this.value;
-        let phonereg = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/g;
-        //정규식 Pass
-        if (phonereg.test(phoneNum) || phoneNum == "") {
-          document.querySelector(".phonecheck").innerHTML = "";
-          g = 1;
-        //정규식 fail
-        } else if (phoneNum == "") {
-          document.querySelector(".phonecheck").innerHTML = "";
-          g = 0;
-        //정규식 fail
-        } else {
-          document.querySelector(".phonecheck").innerHTML =
-            "숫자 및 -만 입력 가능합니다.";
-          g = 0;
-        }
-      };
-      window.onkeyup = function () {
-        if (idAble === 1 && nickAble === 1 && a == 1 && b == 1 && c == 1 && d == 1 && e == 1 && g == 1) {
-          document.querySelector(".btn").disabled = false;
-        } else {
-          document.querySelector(".btn").disabled = true;
-        }
-      };
       
-      document.querySelector(".btn").onclick = function () {
-        
-      let user_id = document.querySelector('#user_id');
-      let email = document.querySelector('#id');
-      let password = document.querySelector('#password');
-      let nick = document.querySelector('#nickName');
-      let name = document.querySelector('#name');
-      let phone = document.querySelector('#phoneNum');
+      const signup = function (){
+        console.log("눌림")
       $.ajax({
-        url: '/signUpPro',
+        url: '/signup',
         type: 'post',
         data: {
-          user_id: user_id.value,
-          email: email.value,
-          nick: nick.value,
-          password: password.value,
-          name: name.value,
-          phone: phone.value,
+          id: user_id.value,
+          email: user_email.value,
+          authnumber : auth_number.value,
+          nickname: user_nickname.value,
+          name: user_name.value,
+          password: user_password.value,
+          password_a : user_password_a.value,
+          phone: user_phonenum.value,
         },
         success: function(data) {
           if(data === 'success'){
            alert("회원 가입을 축하합니다.");
            window.location.reload();         
-          }else if(data === 'phone') {
-            alert('이미 존재하는 핸드폰 입니다.');
+          }else if(data === 'fail') {
+            alert('기존 중복확인 및 인증받은 정보와 입력하신 정보가 다릅니다. 또는 양식에 맞지 않게 작성하였습니다. 재 인증 또는 재 확인 부탁드립니다.');
           }
+          else if (data == "notnull") alert("모든 칸 필수 입력 부탁드립니다.")
         }
       })
     }

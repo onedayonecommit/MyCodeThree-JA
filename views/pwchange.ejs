@@ -48,8 +48,9 @@
             type="submit"
             class="btn"
             disabled="disabled"
+            onclick="changepw()"
           >
-            <%=result.name %> 님의 비밀번호 재설정
+            <%=name %> 님의 비밀번호 재설정
           </button>
       </div>
       <script>
@@ -137,18 +138,19 @@
     }
 
     // 버튼 클릭 시 서버에 값 전송
-      document.querySelector('.btn').onclick = function(e){
+      const changepw = ()=>{
       $.ajax({
-        url: '/passcha',
+        url: '/finalchangepw',
         type: 'post',
         data: {
-          passwordDom: passwordDom.value,
+          user_pw: password.value,
+          user_pw_a: password_a.value
         },
         success: function(data){
           if(data == 'success') {
             alert('비밀번호가 변경되었으니 로그인해 주시기 바랍니다.')
-            location.reload();
-          }else if(data == 'fail'){
+            window.close()
+          }else if(data == 'timeover'){
             alert('토큰이 만료되었으니 정보를 다시 입력해주세요')
             location.href = '/find'
           }else{
