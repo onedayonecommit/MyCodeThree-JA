@@ -66,14 +66,13 @@ canvas {
 
 .leftMiddle {
   width: 100%;
-  height: 50%;
-  background-color: white;
+  height: 40%;
 }
 
 .leftBottom {
   width: 100%;
-  height: 30%;
-  background-color: aquamarine;
+  height: 40%;
+  margin: auto 0;
 }
 
 #logBodyRight {
@@ -82,4 +81,47 @@ canvas {
   height: 100%;
   border: solid thin rgba(27, 26, 26, 0.3);
   border-width: 0 0 0 1px;
+}
+
+.log_btn2 {
+  border: solid 3px rgb(43, 37, 37);
+  position: relative;
+  width: 90%;
+  height: 80px;
+  padding: 10px 20px 10px 20px;
+  box-sizing: border-box;
+  background: rgba(63, 56, 56, 0);
+  font-weight: 600;
+  color: rgb(43, 37, 37);
+  cursor: pointer;
+  font-size: 30px;
+  border-radius: 5px;
+  letter-spacing: 5px;
+  font-family: "Nanum Gothic Coding", monospace;
+}
+
+.log_btn2:hover {
+  background: rgb(117, 9, 9);
+  color: rgb(223, 207, 207);
+  border: solid 1px rgb(223, 207, 207);
+  transition: 0.3s;
+}
+
+#joinFind {
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+#joinFind > a {
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 17px;
+  color: black;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+#joinFind > a:hover {
+  color: rgb(135, 2, 2);
+  transform: scale(1.1);
+  transition: all 0.2s;
 }

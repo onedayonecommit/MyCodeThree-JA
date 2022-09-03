@@ -40,16 +40,13 @@ router.post("/login", (req, res) => {
               },
               process.env.REFRESH_TOKEN,
               {
-                expiresIn: "5m",
+                expiresIn: "1h",
                 issuer: "ksh",
               }
             );
 
             // ref_tok를 확인해서 acc_tok 재발급하기 위해 db에 추가
-            User.update(
-              { refresh: refreshToken },
-              { where: { user_email: id } }
-            );
+            User.update({ refresh: refreshToken }, { where: { user_id: id } });
 
             // session에 발급된 토큰 저장
             req.session.access_token = accessToken;
@@ -270,6 +267,7 @@ router.post("/finalchangepw", (req, res) => {
         if (err) res.send("timeover");
         else if (decoded) {
           bcrypt.hash(user_pw, 10, (err, result) => {
+            console.log(result);
             User.update(
               { user_password: result },
               { where: { user_email: decoded.user_email } }
@@ -285,6 +283,36 @@ router.post("/finalchangepw", (req, res) => {
   }
 });
 
+router.post("/changepw", (req, res) => {
+  const { nowpw, user_password, user_password_a } = req.body;
+  const user_id = jwt.verify(
+    req.session.access_token,
+    process.env.ACCESS_TOKEN,
+    (err, decoded) => {
+      console.log(decoded);
+      return decoded.email;
+    }
+  );
+  User.findOne({ where: { user_id: user_id } }).then((e) => {
+    bcrypt.compare(nowpw, e.user_password, (err, decoded) => {
+      if (!decoded) res.send("nowpwfailed");
+      else if (user_password != null && user_password == user_password_a) {
+        bcrypt.hash(user_password, 10, (err, encoded) => {
+          User.update(
+            { user_password: encoded },
+            { where: { user_id: user_id } }
+          );
+          req.session.destroy(() => {
+            req.session;
+          });
+          res.send("success");
+        });
+      } else {
+        res.send("updatepwfailed");
+      }
+    });
+  });
+});
 /** 이메일 인증 후 패스워드 변경 할 페이지 */
 // router.post("/changepwhurryup", (req, res) => {
 //   jwt.verify(

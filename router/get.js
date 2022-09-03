@@ -10,7 +10,6 @@ const { User } = require("../models");
 /** 메인페이지 */
 router.get("/", (req, res) => {
   res.render("start");
-  console.log(req.session);
 });
 
 /** 로그인 페이지 = (1) */
@@ -126,9 +125,7 @@ router.get("/mypage", middleware, (req, res) => {
       return decoded.email;
     }
   );
-  console.log(user_email);
   User.findOne({ where: { user_id: user_email } }).then((e) => {
-    console.log(e.user_id);
     res.render("mypage_edit(gh)", { data: e });
   });
 });

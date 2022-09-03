@@ -14,43 +14,66 @@
       <div class="inner-container">
         <div class="mypage-top">
           <div class="title">마이페이지</div>
-          <div class="mypage"><%= data.user_id %></div>
-          <div class="mypage"><%= data.user_email %></div>
-          <div class="mypage"><%= data.user_phone %></div>
+          <div class="mypage">아이디 : <%= data.user_id %></div>
+          <div class="mypage">닉네임 : <%= data.nickname %></div>
+          <div class="mypage">이메일 : <%= data.user_email %></div>
+          <div class="mypage">전화번호 : <%= data.user_phone %></div>
         </div>
         <div class="column-item">
-          <input type="password" class="password" placeholder="현재 비번" />
+          <input
+            type="password"
+            class="password"
+            placeholder="현재 비번"
+            id="nowpw"
+          />
           <input
             type="password"
             class="password"
             placeholder="변경할 비밀번호"
+            id="password"
           />
           <input
             type="password"
             class="password"
             placeholder="변경할 비밀번호 재 입력"
+            id="password_a"
           />
-          <button class="save-btn">저장</button>
+          <button class="save-btn" onclick="changepw()">저장</button>
+          <button class="out-btn" onclick="getout()">나가기</button>
         </div>
       </div>
     </div>
   </body>
   <script>
-    window.onload(
+    const getout = () => {
+      window.location = "/keep";
+    };
+    const changepw = () => {
       $.ajax({
-        url: "/mypage",
-        type: "get",
-        data: {},
+        url: "changepw",
+        type: "post",
+        data: {
+          nowpw: nowpw.value,
+          user_password: password.value,
+          user_password_a: password_a.value,
+        },
         success: (data) => {
           switch (data) {
-            case "tokenfail":
+            case "success":
+              alert("변경 완료 재 로그인 부탁드립니다.");
               window.location = "/";
+              break;
+            case "nowpwfailed":
+              alert("현재 비밀번호가 일치하지 않습니다. 확인 부탁드립니다.");
+              break;
+            case "updatepwfailed":
+              alert("변경할 비밀번호 확인 부탁드립니다.");
               break;
             default:
               break;
           }
         },
-      })
-    );
+      });
+    };
   </script>
 </html>

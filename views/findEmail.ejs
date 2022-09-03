@@ -21,27 +21,27 @@
         </div>
         <!-- 이메일 -->
         <div class="content">
-          <input type="email" placeholder="이메일" id="id" name="email" class="id" maxlength="30" />
-          <button id="email_ctf_btn" class="checkbtn_disable3" disabled>인증번호 발송</button>
+          <input type="email" placeholder="이메일" id="user_email" name="email" class="id" maxlength="30" />
+          <button onclick="sendauth()" id="email_ctf_btn" class="checkbtn_disable3" disabled>인증번호 발송</button>
         </div>
         <!-- 이메일 인증번호 -->
         <div class="content">
         <input
           type="text"
-          id="email_ctf"
+          id="email_auth"
           name="email_ctf"
           class="id"
           placeholder="인증번호"
         />
         <!-- 인증번호 검사 버튼 -->
-        <button id="" class="checkbtn_disable">인증번호 확인</button>
+        <button onclick="" id="" class="checkbtn_disable">인증번호 확인</button>
         </div>
           <!-- 이름 -->
           <div class="content">
           <input
             type="text"
             placeholder="이름"
-            id="name"
+            id="user_name"
             name="name"
             class="id"
             maxlength="10"
@@ -52,7 +52,7 @@
           <input
             type="text"
             placeholder="연락처(- 없이 입력)"
-            id="phoneNum"
+            id="user_phoneNum"
             name="phone"
             class="phoneNum"
             maxlength="20"
@@ -60,34 +60,24 @@
           </div>
           <!-- 비밀번호 재설정 button -->
           <button
+          onclick="emailfind()"
             type="submit"
             class="btn"
             disabled="disabled"
           >
-            내 이메일 보기
+            내 아이디 찾기
           </button>
       </div>
       <script>
-        let email = document.querySelector('#id');
-        let email_ctf = document.querySelector("#email_ctf")
-        let name = document.querySelector('#name');
-        let phone = document.querySelector('.phoneNum');
-        // 버튼 활성화 조건 생성
-        let a = 0;
-        let b = 0;
-        let c = 0;
-        let d = 0;
         // 이메일 입력 시
         email.onkeyup = function(){
             let val = email.value;
             if(val == ""){
               document.querySelector('.checkbtn_disable3').disabled = true;
               document.querySelector('.checkbtn_disable3').classList.remove('checkbtn_able3');
-                a = 0;
             }else{
               document.querySelector('.checkbtn_disable3').disabled = false;
               document.querySelector('.checkbtn_disable3').classList.add('checkbtn_able3');
-                a = 1
             }
         }
         // 인증번호 입력 시
@@ -96,40 +86,28 @@
           if(val == ""){
               document.querySelector('.checkbtn_disable').disabled = true;
               document.querySelector('.checkbtn_disable').classList.remove('checkbtn_able');
-                b = 0;
             }else{
               document.querySelector('.checkbtn_disable').disabled = false;
               document.querySelector('.checkbtn_disable').classList.add('checkbtn_able');
-                b = 1
             }
         }
         // 이름 입력 시
-        name.onkeyup = function(){
-            let val = name.value;
-            if(val == ""){
-                c = 0;
-            }else{
-                c = 1
-            }
-        }
-        // 핸드폰 입력 시
-        phone.onkeyup = function(){
-            let val = phone.value;
-            if(val == ""){
-                d = 0;
-            }else{
-                d = 1
-            }
-        }
+        // name.onkeyup = function(){
+        //     let val = name.value;
+        // }
+        // // 핸드폰 입력 시
+        // phone.onkeyup = function(){
+        //     let val = phone.value;
+        // }
          
         // 모든 조건 입력 시 버튼 활성화
-        window.onkeyup = function(){
-        if(a == 1 && b == 1 && c == 1 && d == 1) {
-            document.querySelector('.btn').disabled = false;
-        }else{
-            document.querySelector('.btn').disabled = true;
-        }
-    }
+    //     window.onkeyup = function(){
+    //     if(a == 1 && b == 1 && c == 1 && d == 1) {
+    //         document.querySelector('.btn').disabled = false;
+    //     }else{
+    //         document.querySelector('.btn').disabled = true;
+    //     }
+    // }
         // 버튼 클릭 시 서버에 값 전송
         document.querySelector('.btn').onclick = function(e){
         $.ajax({
