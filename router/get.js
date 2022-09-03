@@ -129,4 +129,16 @@ router.get("/mypage", middleware, (req, res) => {
     res.render("mypage_edit(gh)", { data: e });
   });
 });
+
+router.get("/myid", (req, res) => {
+  jwt.verify(req.session.findid, process.env.FINDIDTOKEN, (err, decoded) => {
+    if (err) res.redirect("/findEmail");
+    else {
+      User.findOne({ where: { user_email: decoded.email } }).then((e) => {
+        if (e == null) res.redirect("/findEmail");
+        else res.render("myEmail", { data: e });
+      });
+    }
+  });
+});
 module.exports = router;

@@ -182,8 +182,6 @@ router.post("/signup", (req, res) => {
 /** 아이디 찾을 때 이메일 인증받기 */
 router.post("/findemail", (req, res) => {
   const email = req.body.email;
-  const authnumber = randomauth.randomfunc();
-  console.log(authnumber);
   User.findOne({ where: { user_email: req.body.email } }).then((e) => {
     if (e == null) res.send("notemail");
     else {
@@ -198,11 +196,13 @@ router.post("/findemail", (req, res) => {
           issuer: "gyeonghwan",
         }
       );
+      const authnumber = randomauth.randomfunc();
       let sendmail = {
         toEmail: email,
         subject: `안녕하세요 내 코 석 이메일 인증번호 입니다.`,
         text: `${email} 님 반갑습니다. 이메일 인증번호는 <h1>${authnumber}</h1> 입니다. 인증번호 칸에 입력 후 인증 확인 부탁드립니다.`,
       };
+      console.log(authnumber);
       mailer.sendmail(sendmail);
       req.session.user_auth_number = authnumber;
       res.send("success");
@@ -313,6 +313,35 @@ router.post("/changepw", (req, res) => {
     });
   });
 });
+
+router.post("/findid", (req, res) => {
+  const { email, authnumber, name, phoneNum } = req.body;
+  console.log(email, authnumber, name, phoneNum);
+  console.log(email != "" && authnumber != "" && name != "" && phoneNum != "");
+  if (email != "" && authnumber != "" && name != "" && phoneNum != "") {
+    if (
+      req.session.user_auth_number == authnumber &&
+      req.session.user_email == email
+    ) {
+      User.findOne({
+        where: { user_email: email, user_name: name, user_phone: phoneNum },
+      }).then((e) => {
+        if (e == null) res.send("notfound");
+        else {
+          req.session.findid = jwt.sign(
+            { email: email },
+            process.env.FINDIDTOKEN,
+            {
+              expiresIn: "5m",
+            }
+          );
+          res.send("success");
+        }
+      });
+    } else res.send("failed");
+  } else res.send("notnull");
+});
+
 /** 이메일 인증 후 패스워드 변경 할 페이지 */
 // router.post("/changepwhurryup", (req, res) => {
 //   jwt.verify(
