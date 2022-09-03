@@ -97,7 +97,7 @@ const middleware = (req, res, next) => {
             res.redirect("/");
           } else {
             // ref_tok 존재하여 해당 email 찾아 acc_tok 재발급
-            User.findOne({ where: { email: ref_decoded.email } })
+            User.findOne({ where: { user_email: ref_decoded.email } })
               .then((e) => {
                 if (e?.refresh == refresh_token) {
                   const accessToken = jwt.sign(

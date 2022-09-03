@@ -19,7 +19,7 @@ router.post("/login", (req, res) => {
     .then((e) => {
       // 이메일로 받은 값이 가입된 회원일 경우 암호화된 비밀번호 비교
       if (e) {
-        bcrypt.compare(pw, e?.password, (err, same) => {
+        bcrypt.compare(pw, e.user_password, (err, same) => {
           // 암호화된 비밀번호가 같을경우 토큰 발급
           if (same) {
             const accessToken = jwt.sign(
@@ -46,7 +46,10 @@ router.post("/login", (req, res) => {
             );
 
             // ref_tok를 확인해서 acc_tok 재발급하기 위해 db에 추가
-            User.update({ refresh: refreshToken }, { where: { email: id } });
+            User.update(
+              { refresh: refreshToken },
+              { where: { user_email: id } }
+            );
 
             // session에 발급된 토큰 저장
             req.session.access_token = accessToken;
@@ -220,25 +223,37 @@ router.post("/findpw", (req, res) => {
     name != "" &&
     phone != ""
   ) {
-    if (
-      req.session.user_auth_number == authnumber &&
-      req.session.user_email == email
-    ) {
-      req.session.findpwtoken = jwt.sign(
-        {
-          user_email: email,
-          name: name,
-        },
-        process.env.FINDPWTOKEN,
-        {
-          expiresIn: "5m",
-          issuer: "gh",
+    User.findOne({
+      where: {
+        user_id: id,
+        user_email: email,
+        user_name: name,
+        user_phone: phone,
+      },
+    }).then((e) => {
+      if (e == null) res.send("notfound");
+      else {
+        if (
+          req.session.user_auth_number == authnumber &&
+          req.session.user_email == email
+        ) {
+          req.session.findpwtoken = jwt.sign(
+            {
+              user_email: email,
+              name: name,
+            },
+            process.env.FINDPWTOKEN,
+            {
+              expiresIn: "5m",
+              issuer: "gh",
+            }
+          );
+          res.send("success");
+        } else {
+          res.send("fail");
         }
-      );
-      res.send("success");
-    } else {
-      res.send("fail");
-    }
+      }
+    });
   } else {
     res.send("notnull");
   }

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="../cssandjs/css/mypage_edit.css" />
+    <link rel="stylesheet" href="/css/mypage_edit.css" />
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   </head>
   <body>
@@ -14,9 +14,9 @@
       <div class="inner-container">
         <div class="mypage-top">
           <div class="title">마이페이지</div>
-          <div class="mypage"><%= data.id %></div>
-          <div class="mypage"><%= data.email %></div>
-          <div class="mypage"><%= data.phone %></div>
+          <div class="mypage"><%= data.user_id %></div>
+          <div class="mypage"><%= data.user_email %></div>
+          <div class="mypage"><%= data.user_phone %></div>
         </div>
         <div class="column-item">
           <input type="password" class="password" placeholder="현재 비번" />

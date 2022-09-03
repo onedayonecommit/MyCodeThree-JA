@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const middleware = require("./tokenmiddleware");
 const { application } = require("express");
 router.use(session(Session));
-
+const { User } = require("../models");
 /** 메인페이지 */
 router.get("/", (req, res) => {
   res.render("start");
@@ -82,6 +82,7 @@ router.get("/loginafter", middleware, (req, res) => {
 
 /** (1), acc_tok 확인하여 로그인 유지 (middleware 수행) */
 router.get("/keep", middleware, (req, res) => {
+  console.log(req.session);
   // acc_tok 검증하여 해당 email 변수 담기
   let email = jwt.verify(
     req.session.access_token,
@@ -90,9 +91,11 @@ router.get("/keep", middleware, (req, res) => {
       return result.email;
     }
   );
+  console.log(email);
   // 담은 변수를 render page에 정보 보내기
-  User.findOne({ where: { email: email } }).then((e) => {
-    let name = e.name;
+  User.findOne({ where: { user_id: email } }).then((e) => {
+    console.log(e);
+    let name = e.user_name;
     res.render("login(keep)", {
       id: name,
     });
@@ -116,6 +119,17 @@ router.get("/storeManager", (req, res) => {
 
 // 마이페이지
 router.get("/mypage", middleware, (req, res) => {
-  res.render("mypage_edit");
+  const user_email = jwt.verify(
+    req.session.access_token,
+    process.env.ACCESS_TOKEN,
+    (err, decoded) => {
+      return decoded.email;
+    }
+  );
+  console.log(user_email);
+  User.findOne({ where: { user_id: user_email } }).then((e) => {
+    console.log(e.user_id);
+    res.render("mypage_edit(gh)", { data: e });
+  });
 });
 module.exports = router;
