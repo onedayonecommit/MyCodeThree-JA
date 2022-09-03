@@ -129,4 +129,10 @@ router.get("/mypage", middleware, (req, res) => {
     res.render("mypage_edit(gh)", { data: e });
   });
 });
+
+// 글쓰기 버튼 클릭했을 때
+router.get("/writing", (req, res) => {
+  res.render("writing");
+});
+
 module.exports = router;
