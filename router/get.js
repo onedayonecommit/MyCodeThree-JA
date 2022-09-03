@@ -99,6 +99,22 @@ router.get("/keep", middleware, (req, res) => {
   });
 });
 
+// 로그인 전 store 페이지
+router.get("/store", (req, res) => {
+  res.render("store");
+});
+
+// 로그인 후 유저 store keeping page
+router.get("/storeKeep", (req, res) => {
+  res.render("store(keep)");
+});
+
+// 로그인 후 관리자 store page
+router.get("/storeManager", (req, res) => {
+  res.render("store(manager)");
+});
+
+// 마이페이지
 router.get("/mypage", middleware, (req, res) => {
   res.render("mypage_edit");
 });
