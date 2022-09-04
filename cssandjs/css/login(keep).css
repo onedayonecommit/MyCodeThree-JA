@@ -149,7 +149,7 @@ canvas {
 }
 
 .right-date-content {
-  /* position: absolute; */
+  position: absolute;
   display: inline;
 }
 

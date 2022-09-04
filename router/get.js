@@ -63,17 +63,14 @@ router.get("/login", (req, res) => {
     jwt.verify(req.session.access_token, process.env.ACCESS_TOKEN);
     res.redirect("/keep");
   } catch (error) {
-    Freeboard.findAll({}).then((e) => {
+    Freeboard.findAll({
+      order: [["createdAt", "DESC"]],
+    }).then((e) => {
       res.render("login", {
         data: e,
       });
     });
   }
-});
-
-/** 로그인 후 페이지 */
-router.get("/loginafter", middleware, (req, res) => {
-  res.render("after");
 });
 
 /** (1), acc_tok 확인하여 로그인 유지 (middleware 수행) */
@@ -89,9 +86,14 @@ router.get("/keep", middleware, (req, res) => {
   );
   console.log(email);
   // 담은 변수를 render page에 정보 보내기
-  User.findOne({ where: { user_id: email } }).then((e) => {
-    res.render("login(keep)", {
-      id: e.user_name,
+  User.findOne({ where: { user_id: email } }).then((ee) => {
+    Freeboard.findAll({
+      order: [["createdAt", "DESC"]],
+    }).then((e) => {
+      res.render("login(keep)", {
+        id: ee.user_name,
+        data: e,
+      });
     });
   });
 });
