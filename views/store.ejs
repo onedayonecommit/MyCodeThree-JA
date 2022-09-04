@@ -10,7 +10,7 @@
     />
     <meta name="generator" content="Hugo 0.101.0" />
     <title>STORE</title>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link
       rel="canonical"
       href="https://getbootstrap.com/docs/5.2/examples/album/"
@@ -164,14 +164,13 @@
             <div class="col-sm-4 offset-md-1 py-4">
               <h4 class="text-white">Login</h4>
               <ul class="list-unstyled mar_b">
-                <input type="text" placeholder="User ID" />
-                <input type="password" placeholder="Password" />
-                <button
-                  class="storeLogin"
-                  onclick="location.href = '/storeKeep'"
-                >
-                  로그인
-                </button>
+                <input type="text" placeholder="User ID" id="user_id" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  id="user_password"
+                />
+                <button class="storeLogin" onclick="login()">로그인</button>
               </ul>
             </div>
           </div>
@@ -179,7 +178,7 @@
       </div>
       <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container">
-          <a href="#" class="navbar-brand d-flex align-items-center">
+          <a href="" class="navbar-brand d-flex align-items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -366,7 +365,33 @@
         </p>
       </div>
     </footer>
-
+    <script>
+      const login = () => {
+        console.log("click");
+        $.ajax({
+          url: "/login",
+          type: "post",
+          data: {
+            id: user_id.value,
+            pw: user_password.value,
+          },
+          success: (data) => {
+            switch (data) {
+              case "login true":
+                alert("로그인 성공");
+                window.location = "/storekeep";
+                break;
+              case "fail":
+                alert("로그인 실패 Eamil/Password 확인해주세요");
+                break;
+              default:
+                alert("예기치 못한 오류 발생 지속 발생시 관리자 문의 요망");
+                break;
+            }
+          },
+        });
+      };
+    </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"

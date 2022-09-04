@@ -12,11 +12,6 @@ router.get("/", (req, res) => {
   res.render("start");
 });
 
-/** 로그인 페이지 = (1) */
-router.get("/log", (req, res) => {
-  res.render("login");
-});
-
 /** 회원가입 페이지 = (2) */
 router.get("/join", (req, res) => {
   res.render("joinMember");
@@ -64,14 +59,12 @@ router.get("/signup", (req, res) => {
 /** 로그인 페이지 */
 router.get("/login", (req, res) => {
   console.log(req.session);
-  jwt.verify(
-    req.session.accesstoken,
-    process.env.ACCESSTOKEN_SECRET,
-    (err, decoded) => {
-      console.log(decoded);
-    }
-  );
-  res.render("login");
+  try {
+    jwt.verify(req.session.access_token, process.env.ACCESS_TOKEN);
+    res.redirect("/keep");
+  } catch (error) {
+    res.render("login");
+  }
 });
 
 /** 로그인 후 페이지 */
@@ -103,12 +96,31 @@ router.get("/keep", middleware, (req, res) => {
 
 // 로그인 전 store 페이지
 router.get("/store", (req, res) => {
-  res.render("store");
+  try {
+    jwt.verify(req.session.access_token, process.env.ACCESS_TOKEN);
+    res.redirect("/storeKeep");
+  } catch (error) {
+    res.render("store");
+  }
 });
 
 // 로그인 후 유저 store keeping page
-router.get("/storeKeep", (req, res) => {
-  res.render("store(keep)");
+router.get("/storeKeep", middleware, (req, res) => {
+  const user_email = jwt.verify(
+    req.session.access_token,
+    process.env.ACCESS_TOKEN,
+    (err, decoded) => {
+      return decoded.email;
+    }
+  );
+  try {
+    User.findOne({ where: { user_id: user_email } }).then((e) => {
+      console.log(e);
+      res.render("store(keep)", { data: e });
+    });
+  } catch (error) {
+    res.redirect("/deletesession");
+  }
 });
 
 // 로그인 후 관리자 store page
@@ -128,6 +140,11 @@ router.get("/mypage", middleware, (req, res) => {
   User.findOne({ where: { user_id: user_email } }).then((e) => {
     res.render("mypage_edit(gh)", { data: e });
   });
+});
+
+// 글쓰기 버튼 클릭했을 때
+router.get("/writing", (req, res) => {
+  res.render("writing");
 });
 
 router.get("/myid", (req, res) => {
