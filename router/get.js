@@ -144,8 +144,20 @@ router.get("/storeKeep", middleware, (req, res) => {
 });
 
 // 로그인 후 관리자 store page
-router.get("/storeManager", (req, res) => {
-  res.render("store(manager)");
+router.get("/storeManager", middleware, (req, res) => {
+  User.findOne({
+    where: {
+      user_id: jwt.verify(req.session.access_token, process.env.ACCESS_TOKEN)
+        .email,
+    },
+  }).then((e) => {
+    console.log(e.admin);
+    if (e.admin == 0) {
+      res.redirect("/storeKeep");
+    } else if (e.admin == 1) {
+      res.render("store(manager)");
+    } else res.redirect("/deletesession");
+  });
 });
 
 // 마이페이지
