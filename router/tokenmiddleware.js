@@ -94,7 +94,7 @@ const middleware = (req, res, next) => {
         (err, ref_decoded) => {
           // ref_tok 만료된 경우
           if (err) {
-            res.redirect("/");
+            res.redirect("/login");
           } else {
             // ref_tok 존재하여 해당 email 찾아 acc_tok 재발급
             User.findOne({ where: { user_email: ref_decoded.email } })
@@ -117,7 +117,7 @@ const middleware = (req, res, next) => {
                   next();
                 } else {
                   // tok 전부 만료되어 다시 로그인
-                  res.redirect("/log");
+                  res.redirect("/login");
                 }
               })
               .catch((err) => {

@@ -179,11 +179,13 @@
               </p> -->
             </div>
             <div class="col-sm-4 offset-md-1 py-4">
-              <h4 class="text-white">??? 님 현재 보유 코인</h4>
-              <h5 class="text-white">100 coin</h5>
+              <h4 class="text-white">
+                <%= data.user_name %> 님 현재 보유 코인
+              </h4>
+              <h5 class="text-white"><%= data.cash_point %> coin</h5>
               <div class="flex">
                 <a href="" class="text-red">coin 충전</a>
-                <a href="/store" class="text-red">Logout</a>
+                <a href="/deletesession" class="text-red">Logout</a>
               </div>
             </div>
           </div>
