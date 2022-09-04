@@ -8,14 +8,14 @@ input {
   text-align: left;
 }
 
-#writing-title {
+#writing_title {
   position: absolute;
   top: 5%;
   left: 10%;
   width: 600px;
 }
 
-#writing-contents {
+#writing_contents {
   position: absolute;
   top: 10%;
   left: 10%;
@@ -23,7 +23,7 @@ input {
   height: 450px;
 }
 
-#btn-writing {
+#btn_writing {
   position: absolute;
   width: 150px;
   bottom: 13%;

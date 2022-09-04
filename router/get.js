@@ -86,7 +86,6 @@ router.get("/keep", middleware, (req, res) => {
   console.log(email);
   // 담은 변수를 render page에 정보 보내기
   User.findOne({ where: { user_id: email } }).then((e) => {
-    console.log(e);
     let name = e.user_name;
     res.render("login(keep)", {
       id: name,
@@ -115,7 +114,6 @@ router.get("/storeKeep", middleware, (req, res) => {
   );
   try {
     User.findOne({ where: { user_id: user_email } }).then((e) => {
-      console.log(e);
       res.render("store(keep)", { data: e });
     });
   } catch (error) {
@@ -144,6 +142,7 @@ router.get("/mypage", middleware, (req, res) => {
 
 // 글쓰기 버튼 클릭했을 때
 router.get("/writing", (req, res) => {
+  console.log(req.session);
   res.render("writing");
 });
 

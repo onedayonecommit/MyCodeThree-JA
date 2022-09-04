@@ -283,15 +283,10 @@ a {
   font-family: "Nanum Gothic Coding", monospace;
 }
 
-a {
-  text-decoration: none;
-  color: black;
-}
-
 #left-clickbtn {
   position: absolute;
-  left: 12%;
-  bottom: 20%;
+  left: 30%;
+  bottom: 18%;
   border: solid 3px rgb(43, 37, 37);
   width: 30%;
   height: 50px;
@@ -299,15 +294,20 @@ a {
   box-sizing: border-box;
   background: rgba(63, 56, 56, 0);
   font-weight: 600;
-  color: rgb(43, 37, 37);
+  /* color: rgb(43, 37, 37); */
   cursor: pointer;
   font-size: 17px;
   border-radius: 5px;
   margin-left: 20px;
   letter-spacing: 5px;
-  font-family: "Nanum Gothic Coding", monospace;
+  /* font-family: "Nanum Gothic Coding", monospace; */
 }
-
+#left-clickbtn:hover {
+  background: rgb(117, 9, 9);
+  color: rgb(223, 207, 207);
+  border: solid 0.5px rgb(223, 207, 207);
+  transition: 0.3s;
+}
 #right-date-title {
   width: 100px;
   background-color: skyblue;

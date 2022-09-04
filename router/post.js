@@ -9,7 +9,8 @@ const randomauth = require("./randomauth");
 const jwt = require("jsonwebtoken");
 const jwtsign = require("./jwt");
 const { user } = require("../config/mail");
-const { User } = require("../models");
+const { User, Freeboard } = require("../models");
+const middleware = require("./tokenmiddleware");
 router.use(session(Session));
 
 /**  로그인 요청 처리하는 곳 */
@@ -143,7 +144,6 @@ router.post("/nickCheck", (req, res) => {
 router.post("/signup", (req, res) => {
   let { id, email, authnumber, nickname, name, password, password_a, phone } =
     req.body;
-  console.log(req.body.password, req.body.password_a);
   if (
     id != "" &&
     email != "" &&
@@ -267,7 +267,6 @@ router.post("/finalchangepw", (req, res) => {
         if (err) res.send("timeover");
         else if (decoded) {
           bcrypt.hash(user_pw, 10, (err, result) => {
-            console.log(result);
             User.update(
               { user_password: result },
               { where: { user_email: decoded.user_email } }
@@ -289,7 +288,6 @@ router.post("/changepw", (req, res) => {
     req.session.access_token,
     process.env.ACCESS_TOKEN,
     (err, decoded) => {
-      console.log(decoded);
       return decoded.email;
     }
   );
@@ -316,8 +314,6 @@ router.post("/changepw", (req, res) => {
 
 router.post("/findid", (req, res) => {
   const { email, authnumber, name, phoneNum } = req.body;
-  console.log(email, authnumber, name, phoneNum);
-  console.log(email != "" && authnumber != "" && name != "" && phoneNum != "");
   if (email != "" && authnumber != "" && name != "" && phoneNum != "") {
     if (
       req.session.user_auth_number == authnumber &&
@@ -340,6 +336,29 @@ router.post("/findid", (req, res) => {
       });
     } else res.send("failed");
   } else res.send("notnull");
+});
+
+router.post("/contentregist", (req, res) => {
+  console.log("포스트 접속 완료");
+  const { title, content } = req.body;
+  if (title != "" && content != "") {
+    const user_id = jwt.verify(
+      req.session.access_token,
+      process.env.ACCESS_TOKEN,
+      (err, decoded) => {
+        return decoded.email;
+      }
+    );
+    const nickname = User.findOne({ where: { user_id: user_id } }).then((e) => {
+      return e.nickname;
+    });
+    Freeboard.create({
+      title: title,
+      content: content,
+      nickname: nickname,
+    });
+    res.send("success");
+  } else res.send("fail");
 });
 
 /** 이메일 인증 후 패스워드 변경 할 페이지 */
