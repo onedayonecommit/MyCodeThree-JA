@@ -127,6 +127,8 @@ canvas {
 }
 
 .hr-line {
+  position: relative;
+  top: 11%;
   display: block;
   width: 100%;
   height: 1px;
@@ -134,19 +136,21 @@ canvas {
 }
 .right-basic {
   position: relative;
-  padding: 50px;
   width: 500px;
   border-left: 1px solid black;
 }
 
 #right-header {
+  position: relative;
+  top: 10%;
+  left: 10%;
   float: left;
   margin-bottom: 5px;
 }
 
 .right-date-content {
+  /* position: absolute; */
   display: inline;
-  margin: 5px 20px;
 }
 
 #right-clickbtn {
@@ -175,7 +179,23 @@ a {
   font-family: "Nanum Gothic Coding", monospace;
 }
 
+.right-databox {
+  position: relative;
+  top: 13%;
+}
+
+#writing-time {
+  left: 8%;
+}
+
 #right-date-title {
-  width: 100px;
-  background-color: skyblue;
+  left: 35%;
+}
+
+#nickname {
+  left: 60%;
+}
+
+#click-views {
+  left: 80%;
 }
