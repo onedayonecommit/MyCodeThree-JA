@@ -342,22 +342,22 @@ router.post("/contentregist", (req, res) => {
   console.log("포스트 접속 완료");
   const { title, content } = req.body;
   if (title != "" && content != "") {
-    const user_id = jwt.verify(
-      req.session.access_token,
-      process.env.ACCESS_TOKEN,
-      (err, decoded) => {
-        return decoded.email;
-      }
-    );
-    const nickname = User.findOne({ where: { user_id: user_id } }).then((e) => {
-      return e.nickname;
-    });
-    Freeboard.create({
-      title: title,
-      content: content,
-      nickname: nickname,
-    });
-    res.send("success");
+    try {
+      const user_id = jwt.verify(
+        req.session.access_token,
+        process.env.ACCESS_TOKEN
+      ).email;
+      User.findOne({ where: { user_id: user_id } }).then((e) => {
+        Freeboard.create({
+          title: title,
+          content: content,
+          nickname: e.nickname,
+        });
+      });
+      res.send("success");
+    } catch (error) {
+      res.send("notlogin");
+    }
   } else res.send("fail");
 });
 
