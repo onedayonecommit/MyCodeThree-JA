@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const moment = require("moment");
 
 class Freeboard extends Sequelize.Model {
   static init(sequelize) {
@@ -18,15 +19,19 @@ class Freeboard extends Sequelize.Model {
           type: Sequelize.STRING(5000),
           allowNull: false,
         },
-        // nickname: {
-        //   type: Sequelize.STRING(1000),
-        //   unique: true,
-        //   allowNull: false,
-        // },
         replypoint: {
           type: Sequelize.INTEGER,
           allowNull: false,
           defaultValue: 0,
+        },
+        createdAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          get() {
+            return moment(this.getDataValue("createdAt")).format(
+              "MM-DD hh:mm:ss"
+            );
+          },
         },
       },
       {

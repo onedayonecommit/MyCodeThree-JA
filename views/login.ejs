@@ -88,6 +88,14 @@
           <div class="right-date-content">제목</div> <!-- id="right-date-title"-->
           <div class="right-date-content">닉네임</div> <!-- id="nickname"-->
           <div class="right-date-content">조회수</div> <!-- id="click-views"-->          
+          <br>
+          <% for (let i = 0; i < data.length ; i++) { %>
+            <div class="right-date-content"><%= data[i].createdAt %> </div>
+            <div class="right-date-content"><a href="/board/<%= data[i].bno%>"><%= data[i].title %> </a></div>
+            <div class="right-date-content"><%= data[i].nickname %> </div>
+            <div class="right-date-content"><%= data[i].replypoint %> </div>
+            <br>
+            <% } %>
         </div>
         <button id="left-clickbtn"><a href="/store">STORE</a></button> 
       </div>

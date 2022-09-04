@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const middleware = require("./tokenmiddleware");
 const { application } = require("express");
 router.use(session(Session));
-const { User } = require("../models");
+const { User, Freeboard } = require("../models");
 /** 메인페이지 */
 router.get("/", (req, res) => {
   res.render("start");
@@ -63,7 +63,11 @@ router.get("/login", (req, res) => {
     jwt.verify(req.session.access_token, process.env.ACCESS_TOKEN);
     res.redirect("/keep");
   } catch (error) {
-    res.render("login");
+    Freeboard.findAll({}).then((e) => {
+      res.render("login", {
+        data: e,
+      });
+    });
   }
 });
 
@@ -86,9 +90,8 @@ router.get("/keep", middleware, (req, res) => {
   console.log(email);
   // 담은 변수를 render page에 정보 보내기
   User.findOne({ where: { user_id: email } }).then((e) => {
-    let name = e.user_name;
     res.render("login(keep)", {
-      id: name,
+      id: e.user_name,
     });
   });
 });
@@ -157,4 +160,30 @@ router.get("/myid", (req, res) => {
     }
   });
 });
+router.get("/board/:id", (req, res) => {
+  Freeboard.findOne({ where: { bno: req.params.id } }).then((e) => {
+    if (e == null) {
+      res.status(404).render("404");
+    } else {
+      let content = `<!DOCTYPE html>
+      <html lang="en">
+      <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+      </head>
+      <body>
+      <h1>제목 : ${e.title}</h1></br>
+      <h3>내용 : ${e.content}</h3>
+      </body>
+      </html>`;
+      res.send(content);
+    }
+  });
+});
+
+// router.get("/board/" + "?id" , (req, res) => {
+//   Freeboard.findOne
+// });
 module.exports = router;

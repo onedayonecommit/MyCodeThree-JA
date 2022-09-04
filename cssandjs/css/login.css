@@ -253,8 +253,12 @@ h3 {
 }
 
 .right-date-content {
+  width: 10px;
   display: inline;
   margin: 5px 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #right-clickbtn {

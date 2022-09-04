@@ -24,6 +24,7 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^8.5.1",
     "memorystore": "^1.6.7",
+    "moment": "^2.29.4",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
