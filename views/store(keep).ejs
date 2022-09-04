@@ -253,13 +253,13 @@
             <div class="col">
               <div class="card shadow-sm">
                 <div class="posi-re">
-                  <img class="posi-ab" src="/image/부적.jpeg" alt="" />
+                  <img class="posi-ab" src="<%= skin[0].skin_image%>" alt="" />
                 </div>
 
                 <div class="card-body">
                   <p class="card-text">
-                    [행운의 부적]<br />
-                    괴물에게 잡혀도 1번 되살아나요~
+                    <%= skin[0].skin_name%><br />
+                    <%= skin[0].skin_info%>
                   </p>
                   <div
                     class="d-flex justify-content-between align-items-center"
@@ -272,7 +272,47 @@
                         Buy
                       </button>
                     </div>
-                    <small class="text-muted">100 coin</small>
+                    <small class="text-muted"><%= skin[0].price%>COIN</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card shadow-sm">
+                <svg
+                  class="bd-placeholder-img card-img-top"
+                  width="100%"
+                  height="225"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+                  aria-label="Placeholder: Thumbnail"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                >
+                  <title>Placeholder</title>
+                  <rect width="100%" height="100%" fill="#55595c"  />
+                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
+                    <img src="<%= skin[1].skin_image%>" alt="">
+                  </text>
+                </svg>
+
+                <div class="card-body">
+                  <p class="card-text">
+                    <%= skin[1].skin_name%> <br />
+                    <%= skin[1].skin_info%>
+                  </p>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div class="btn-group">
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-outline-secondary"
+                      >
+                        Buy
+                      </button>
+                    </div>
+                    <small class="text-muted"><%= skin[1].price%> coin</small>
                   </div>
                 </div>
               </div>
@@ -292,15 +332,15 @@
                   <title>Placeholder</title>
                   <rect width="100%" height="100%" fill="#55595c" />
                   <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                    Thumbnail
+                    <img src="<%= skin[2].skin_image%>" alt="나도 몰라">
                   </text>
                 </svg>
 
                 <div class="card-body">
                   <p class="card-text">
-                    This is a wider card with supporting text below as a natural
-                    lead-in to additional content. This content is a little bit
-                    longer.
+                    <%= skin[2].skin_name%>
+                    <br>
+                    <%= skin[2].skin_info%>
                   </p>
                   <div
                     class="d-flex justify-content-between align-items-center"
@@ -313,48 +353,7 @@
                         Buy
                       </button>
                     </div>
-                    <small class="text-muted">100 coin</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="card shadow-sm">
-                <svg
-                  class="bd-placeholder-img card-img-top"
-                  width="100%"
-                  height="225"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-label="Placeholder: Thumbnail"
-                  preserveAspectRatio="xMidYMid slice"
-                  focusable="false"
-                >
-                  <title>Placeholder</title>
-                  <rect width="100%" height="100%" fill="#55595c" />
-                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                    Thumbnail
-                  </text>
-                </svg>
-
-                <div class="card-body">
-                  <p class="card-text">
-                    This is a wider card with supporting text below as a natural
-                    lead-in to additional content. This content is a little bit
-                    longer.
-                  </p>
-                  <div
-                    class="d-flex justify-content-between align-items-center"
-                  >
-                    <div class="btn-group">
-                      <button
-                        type="button"
-                        class="btn btn-sm btn-outline-secondary"
-                      >
-                        Buy
-                      </button>
-                    </div>
-                    <small class="text-muted">100 coin</small>
+                    <small class="text-muted"><%= skin[2].price%> coin</small>
                   </div>
                 </div>
               </div>

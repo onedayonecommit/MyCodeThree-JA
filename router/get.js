@@ -6,8 +6,9 @@ const jwt = require("jsonwebtoken");
 const middleware = require("./tokenmiddleware");
 const { application } = require("express");
 router.use(session(Session));
-const { User, Freeboard } = require("../models");
+const { User, Freeboard, Skin } = require("../models");
 /** 메인페이지 */
+
 router.get("/", (req, res) => {
   res.render("start");
 });
@@ -118,8 +119,11 @@ router.get("/storeKeep", middleware, (req, res) => {
     }
   );
   try {
-    User.findOne({ where: { user_id: user_email } }).then((e) => {
-      res.render("store(keep)", { data: e });
+    User.findOne({ where: { user_id: user_email } }).then((ee) => {
+      Skin.findAll({}).then((e) => {
+        console.log(e[0]);
+        res.render("store(keep)", { data: ee, skin: e });
+      });
     });
   } catch (error) {
     res.redirect("/deletesession");

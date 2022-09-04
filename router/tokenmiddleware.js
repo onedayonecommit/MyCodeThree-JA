@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const mysql = require("mysql2");
 const router = express.Router();
 router.use(session(Session));
-
+const { User } = require("../models");
 let temp = mysql.createConnection({
   host: "localhost",
   user: "root",

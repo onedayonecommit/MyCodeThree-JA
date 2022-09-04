@@ -24,6 +24,10 @@ class Skin extends Sequelize.Model {
           allowNull: false,
           defaultValue: 0,
         },
+        skin_info: {
+          type: Sequelize.STRING(1000),
+          allowNull: false,
+        },
       },
       {
         sequelize,
