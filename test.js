@@ -206,10 +206,10 @@
 // //   }
 // // });
 
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 
-const newpw = bcrypt.hash("rudghks110", 10, (err, encoded) => {
-  console.log(encoded);
-  // return encoded;
-});
-// console.log(newpw);
+// const newpw = bcrypt.hash("rudghks110", 10, (err, encoded) => {
+//   console.log(encoded);
+//   // return encoded;
+// });
+// // console.log(newpw);
