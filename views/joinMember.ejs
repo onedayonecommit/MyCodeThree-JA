@@ -199,16 +199,7 @@
             }
           })
         }
-      // a ~ e = 1 의 조건이 만족되어야 회원가입 버튼 활성화
-      // 0으로 변수 선언
-      // let a = 0;
-      // let b = 0;
-      // let c = 0;
-      // let d = 0;
-      // let e = 0;
-      // let f = 0;
-      // let g = 0;
-      // let sum_ = a + b + c + d + e + f + g;
+
       // 아이디 정규식
       document.querySelector('#user_id').onkeyup = function() {
         let user_id = this.value;
@@ -218,20 +209,17 @@
             document.querySelector('.userIdcheck').innerHTML = "";
             document.querySelector('.checkbtn_disable').disabled = false;
             document.querySelector('.checkbtn_disable').classList.add('checkbtn_able');
-            a = 1;
           // 정규식 fail
           } else if (user_id == "") {
           document.querySelector(".userIdcheck").innerHTML = "";
           document.querySelector(".checkbtn_disable").disablsed = true;
           document.querySelector(".checkbtn_disable").classList.remove("checkbtn_able");
-          a = 0;
         //정규식 fail
         } else {
           document.querySelector(".userIdcheck").innerHTML =
             "4자 이상 입력해주세요."
             document.querySelector(".checkbtn_disable").disabled = true;
             document.querySelector(".checkbtn_disable").classList.remove("checkbtn_able");
-          a = 0;
         }
       };
       
@@ -245,20 +233,17 @@
           document.querySelector(".emailcheck").innerHTML = "";
           document.querySelector(".checkbtn_disable3").disabled = false;
           document.querySelector(".checkbtn_disable3").classList.add("checkbtn_able3");
-          b = 1;
           //정규식 fail
         } else if (id == "") {
           document.querySelector(".emailcheck").innerHTML = "";
           document.querySelector(".checkbtn_disable3").disablsed = true;
           document.querySelector(".checkbtn_disable3").classList.remove("checkbtn_able3");
-          b = 0;
           //정규식 fail
         } else {
           document.querySelector(".emailcheck").innerHTML =
             "이메일을 입력하세요 ex)rudghks0981@gmail.com";
             document.querySelector(".checkbtn_disable3").disabled = true;
             document.querySelector(".checkbtn_disable3").classList.remove("checkbtn_able3");
-            b = 0;
           }
         };
         
@@ -270,16 +255,13 @@
           //정규식 Pass
           if (passwordreg.test(password)) {
             document.querySelector(".passwordcheck").innerHTML = "";
-            c = 1;
             //정규식 fail
           } else if (password == "") {
             document.querySelector(".passwordcheck").innerHTML = "";
-            c = 0;
             //정규식 fail
           } else {
             document.querySelector(".passwordcheck").innerHTML =
             "1개이상의 특수문자 대문자 소문자 숫자를 입력하세요";
-            c = 0;
           }
         };
         //비밀번호 확인 정규식
@@ -288,60 +270,29 @@
           //정규식 Pass
           if (password_a == user_password.value) {
             document.querySelector(".passwordre").innerHTML = "";
-            d = 1;
         //정규식 fail
       } else if (password_a == "") {
         document.querySelector(".passwordre").innerHTML = "";
-        d = 0;
         //정규식 fail
       } else {
         document.querySelector(".passwordre").innerHTML =
         "패스워드가 동일하지 않습니다.";
-        d = 0;
       }
     };
-    // 닉네임 정규식
-    // document.querySelector('#user_nickName').onkeyup = function() {
-    //   let nickName = this.value;
-    //   let nickNameReg = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,20}$/g;
-        
-    //   if (nickNameReg.test(nickName)) {
-    //       document.querySelector('.nickcheck').innerHTML = "";
-    //       document.querySelector('.checkbtn_disable2').disabled = false;
-    //       document.querySelector('.checkbtn_disable2').classList.add('checkbtn_able2');
-    //       e = 1;
-    //     // 정규식 fail
-    //     } else if (nickName == "") {
-    //     document.querySelector(".nickcheck").innerHTML = "";
-    //     document.querySelector(".checkbtn_disable2").disablsed = true;
-    //     document.querySelector(".checkbtn_disable2").classList.remove("checkbtn_able2");
-    //     e = 0;
-    //   //정규식 fail
-    //   } else {
-    //     document.querySelector(".nickcheck").innerHTML =
-    //       "4자 이상 입력해주세요."
-    //       document.querySelector(".checkbtn_disable2").disabled = true;
-    //       document.querySelector(".checkbtn_disable2").classList.remove("checkbtn_able2");
-    //     e = 0;
-    //   }
-    // };
-    //이름 정규식
+    
     document.querySelector("#user_name").onkeyup = function () {
       let name = this.value;
       let namereg = /^[가-힣]{2,6}$/g;
       //정규식 Pass
       if (namereg.test(name)) {
         document.querySelector(".namecheck").innerHTML = "";
-        f = 1;
         //정규식 fail
       } else if (name == "") {
         document.querySelector(".namecheck").innerHTML = "";
-        f = 0;
         //정규식 fail
       } else {
         document.querySelector(".namecheck").innerHTML =
         "두글자이상 한글을 입력하세요";
-          f = 0;
         }
       };
       
