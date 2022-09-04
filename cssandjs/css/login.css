@@ -268,12 +268,18 @@ h3 {
   box-sizing: border-box;
   background: rgba(63, 56, 56, 0);
   font-weight: 600;
-  color: rgb(43, 37, 37);
+  /* color: rgb(43, 37, 37); */
   cursor: pointer;
   font-size: 17px;
   border-radius: 5px;
   margin-left: 20px;
   letter-spacing: 5px;
+  /* font-family: "Nanum Gothic Coding", monospace; */
+}
+
+a {
+  text-decoration: none;
+  color: rgb(43, 37, 37);
   font-family: "Nanum Gothic Coding", monospace;
 }
 

@@ -31,7 +31,27 @@
           </div>
         </div>
       </div>
-      <div id="logBodyRight"></div>
+      <div class="right-basic">
+        <div id="right-header">게시판</div>
+        <div class="hr-line"></div>
+        <div>
+          <div class="right-date-content">작성시간</div>
+          <!-- id="writing-time"-->
+          <div class="right-date-content">제목</div>
+          <!-- id="right-date-title"-->
+          <div class="right-date-content">닉네임</div>
+          <!-- id="nickname"-->
+          <div class="right-date-content">조회수</div>
+          <!-- id="click-views"-->
+        </div>
+        <button id="right-clickbtn">
+          <a
+            href="/writing"
+            onclick="window.open(this.href,'글쓰기','width=800px , height=650px , toolbar-no , scrollbars=yes'); return false;"
+            >글쓰기</a
+          >
+        </button>
+      </div>
     </div>
   </body>
   <script type="module" src="/js/app.js"></script>

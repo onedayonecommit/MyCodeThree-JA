@@ -1,10 +1,12 @@
 # MyCodeThree-JA
 
+.
+
 PORT = 80
 
 DB_HOST = localhost
 DB_USER = root
-DB_PASSWORD = rudghks110
+DB_PASSWORD =
 DB_DATABASE = secondproject
 
 MAIL =
