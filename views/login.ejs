@@ -89,11 +89,11 @@
           <div class="right-date-content" id="nickname">닉네임</div>
           <div class="right-date-content" id="click-views">조회수</div>  
           <br>
-          <% for (let i = 0; i < data.length ; i++) { %>
-            <div class="right-date-content" id="writing-time"><%= data[i].createdAt %> </div>
-            <div class="right-date-content" id="right-date-title"><a href="/board/<%= data[i].bno%>"><%= data[i].title %> </a></div>
-            <div class="right-date-content" id="nickname"><%= data[i].nickname %> </div>
-            <div class="right-date-content" id="click-views"><%= data[i].replypoint %> </div>
+          <% for (let i = 0; i < 20 ; i++) { %>
+            <div class="right-date-content" id="writing-time"><%= data[i]?.createdAt %> </div>
+            <div class="right-date-content" id="right-date-title"><a href="/board/<%= data[i]?.bno%>"><%= data[i]?.title %> </a></div>
+            <div class="right-date-content" id="nickname"><%= data[i]?.nickname %> </div>
+            <div class="right-date-content" id="click-views"><%= data[i]?.replypoint %> </div>
             <br>
             <% } %>
         </div>
