@@ -45,6 +45,19 @@ router.get("/findEmail", (req, res) => {
 /** 회원가입 당시 저장한 세션 초기화 */
 router.get("/deletesession", (req, res) => {
   console.log(req.session);
+  try {
+    User.update(
+      { refresh: null },
+      {
+        where: {
+          user_id: jwt.verify(
+            req.session.access_token,
+            process.env.ACCESS_TOKEN
+          ).email,
+        },
+      }
+    );
+  } catch (error) {}
   req.session.destroy(() => {
     req.session;
   });
