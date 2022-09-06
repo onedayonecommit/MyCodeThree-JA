@@ -151,7 +151,6 @@ router.get("/storeManager", middleware, (req, res) => {
         .email,
     },
   }).then((e) => {
-    console.log(e.admin);
     if (e.admin == 0) {
       res.redirect("/storeKeep");
     } else if (e.admin == 1) {
