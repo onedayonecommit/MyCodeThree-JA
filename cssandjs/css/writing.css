@@ -4,28 +4,74 @@
   /* text-align: center; */
 }
 
+h1 {
+  font-family: "Nanum Gothic Coding", monospace;
+}
+
+#join_title {
+  text-align: center;
+  letter-spacing: 15px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
 input {
   text-align: left;
 }
-
-#writing_title {
-  position: absolute;
-  top: 5%;
-  left: 10%;
-  width: 600px;
+input::placeholder {
+  font-size: 15px;
 }
 
-#writing_contents {
-  position: absolute;
-  top: 10%;
-  left: 10%;
-  width: 600px;
-  height: 450px;
+.form-sign-in-container {
+  margin: 0 auto;
+  max-width: 500px;
+  vertical-align: middle;
+  position: relative;
 }
 
-#btn_writing {
+.content {
+  display: flex;
+  margin: 15px auto 0px auto;
+  border: solid 1px #000000;
+  position: relative;
+  border-radius: 5px;
+}
+
+.btn {
   position: absolute;
-  width: 150px;
-  bottom: 13%;
-  right: 16%;
+  transform: translateX(-50%);
+  left: 50%;
+  font-size: 16px;
+  margin-top: 30px;
+  background-color: rgba(9, 49, 226, 0.712);
+  color: beige;
+  border-radius: 5px;
+  width: 50%;
+  height: 50px;
+  font-weight: 1000;
+  cursor: pointer;
+}
+.btn:hover {
+  font-weight: 500;
+  background-color: white;
+  color: rgba(9, 49, 226, 0.712);
+  border: solid 2px rgba(9, 49, 226, 0.712);
+}
+
+.id {
+  justify-content: space-between;
+  border: none;
+  outline: none;
+  position: relative;
+  text-align: start;
+  font-size: 13px;
+  font-weight: 1000;
+  width: 70%;
+  height: 51px;
+  padding: 10px 14px 10px 14px;
+  vertical-align: top;
+}
+
+.height100 {
+  height: 400px;
 }

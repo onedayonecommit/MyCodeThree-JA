@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+</head>
+
+<body>
+  <a href="/board"> hihi </a>
+  <button onclick="pay123()">결제 승인</button>
+</body>
+<script>
+  function pay123() {
+    $.ajax({
+      type: "POST",
+      url: "https://kapi.kakao.com/v1/payment/ready",
+      headers: {
+        Authorization: "KakaoAK a138e09487948affbe264ae294b29466",
+        "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
+      },
+      data: {
+        cid: "TC0ONETIME",
+        partner_order_id: "1001",
+        partner_user_id: "dongsik",
+        item_name: "Cash Point",
+        quantity: 1,
+        total_amount: 1000000,
+        vat_amount: 200,
+        tax_free_amount: 0,
+        approval_url: "http://localhost/",
+        fail_url: "http://localhost",
+        cancel_url: "http://localhost",
+      },
+      success: async (data) => {
+        window.location = data.next_redirect_pc_url;
+        console.log(data.tid)
+        await $.ajax({
+          type: "get",
+          url: "/kakaopaywait",
+          data: {
+            tid: data.tid
+          }
+        })
+      }
+    });
+  }
+</script>
+
+</html>

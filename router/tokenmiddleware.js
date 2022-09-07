@@ -85,6 +85,8 @@ const middleware = (req, res, next) => {
   const { access_token, refresh_token } = req.session;
 
   // acc_tok 검증
+  try {
+  } catch (error) {}
   jwt.verify(access_token, process.env.ACCESS_TOKEN, (err, acc_decoded) => {
     if (err) {
       // acc_tok 유효기간 지났을 경우 ref_tok 검증

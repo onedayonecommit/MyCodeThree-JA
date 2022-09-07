@@ -7,9 +7,11 @@ const middleware = require("./tokenmiddleware");
 const { application } = require("express");
 router.use(session(Session));
 const { User, Freeboard, Skin } = require("../models");
+const url = require("url");
 /** 메인페이지 */
 
 router.get("/", (req, res) => {
+  // const pg_token = url.parse(req.url, true).query;
   res.render("start");
 });
 
@@ -190,25 +192,51 @@ router.get("/myid", (req, res) => {
     }
   });
 });
+// router.get("/board/:id", (req, res) => {
+//   Freeboard.findOne({ where: { bno: req.params.id } }).then((e) => {
+//     if (e == null) {
+//       res.status(404).render("404");
+//     } else {
+//       let content = `<!DOCTYPE html>
+//       <html lang="en">
+//       <head>
+//       <meta charset="UTF-8">
+//       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+//       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//       <title>Document</title>
+//       </head>
+//       <body>
+//       <h1>제목 : ${e.title}</h1></br>
+//       <h3>내용 : ${e.content}</h3>
+//       </body>
+//       </html>`;
+//       res.send(content);
+//     }
+//   });
+// });
+
+// http://localhost/?pg_token=34d4121f9997d2834c9c
+
 router.get("/board/:id", (req, res) => {
   Freeboard.findOne({ where: { bno: req.params.id } }).then((e) => {
     if (e == null) {
       res.status(404).render("404");
     } else {
-      let content = `<!DOCTYPE html>
-      <html lang="en">
-      <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Document</title>
-      </head>
-      <body>
-      <h1>제목 : ${e.title}</h1></br>
-      <h3>내용 : ${e.content}</h3>
-      </body>
-      </html>`;
-      res.send(content);
+      // let content = `<!DOCTYPE html>
+      // <html lang="en">
+      // <head>
+      // <meta charset="UTF-8">
+      // <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      // <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      // <title>Document</title>
+      // </head>
+      // <body>
+      // <h1>제목 : ${e.title}</h1></br>
+      // <h3>내용 : ${e.content}</h3>
+      // </body>
+      // </html>`;
+      // res.send(content);
+      res.render("board", { data: e });
     }
   });
 });
@@ -217,7 +245,79 @@ router.get("/kakaopay", (req, res) => {
   res.render("test");
 });
 
+router.get("/board/update/:id", (req, res) => {
+  jwt.verify(
+    req.session.access_token,
+    process.env.ACCESS_TOKEN,
+    (err, decoded) => {
+      if (err) res.redirect("/updateerr");
+      else {
+        User.findOne({
+          where: {
+            user_id: decoded.email,
+          },
+        }).then((e) => {
+          if (e == null) {
+            res.redirect("/updateerr");
+          } else if (e != null) {
+            Freeboard.findOne({
+              where: { nickname: e.nickname, bno: req.params.id },
+            }).then((e) => {
+              if (e == null) res.redirect("/updateerr");
+              else if (e != null) res.render("update", { data: e });
+            });
+          }
+        });
+      }
+    }
+  );
+});
+
+router.get("/board/delete/:id", (req, res) => {
+  jwt.verify(
+    req.session.access_token,
+    process.env.ACCESS_TOKEN,
+    (err, decoded) => {
+      if (err) res.redirect("/updateerr");
+      else {
+        User.findOne({
+          where: {
+            user_id: decoded.email,
+          },
+        }).then((e) => {
+          if (e == null) {
+            res.redirect("/updateerr");
+          } else if (e != null) {
+            Freeboard.destroy({
+              where: { nickname: e.nickname, bno: req.params.id },
+            }).then((e) => {
+              if (e == null) res.redirect("/updateerr");
+              else if (e != null) res.render("delete", { data: e });
+            });
+          }
+        });
+      }
+    }
+  );
+});
+router.get("/updateerr", (req, res) => {
+  res.render("errerr");
+});
 // router.get("/board/" + "?id" , (req, res) => {
 //   Freeboard.findOne
 // });
+router.get("/updatesuccess", (req, res) => {
+  res.render("success");
+});
+
+router.get("/kakaopaywait", (req, res) => {
+  const pg_token = url.parse(req.url, true).query;
+  console.log(pg_token);
+  console.log(req.session.tid);
+  res.render("testsign", {
+    data: pg_token.pg_token,
+    tid: req.session.tid,
+  });
+});
+
 module.exports = router;

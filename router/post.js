@@ -9,8 +9,9 @@ const randomauth = require("./randomauth");
 const jwt = require("jsonwebtoken");
 const jwtsign = require("./jwt");
 const { user } = require("../config/mail");
-const { User, Freeboard } = require("../models");
+const { User, Freeboard, Skin, User_inventory } = require("../models");
 const middleware = require("./tokenmiddleware");
+const { route } = require("./get");
 router.use(session(Session));
 
 /**  로그인 요청 처리하는 곳 */
@@ -364,6 +365,41 @@ router.post("/contentregist", (req, res) => {
   } else res.send("fail");
 });
 
+router.post("/board/update/:id", (req, res) => {
+  const { title, content } = req.body;
+  const bno = Number(req.params.id);
+  console.log(req.session);
+  try {
+    jwt.verify(
+      req.session.access_token,
+      process.env.ACCESS_TOKEN,
+      (err, decoded) => {
+        if (err) res.redirect("/updateerr");
+        else {
+          User.findOne({ where: { user_id: decoded.email } }).then((e) => {
+            if (e == null) res.redirect("/updateerr");
+            else {
+              Freeboard.findOne({
+                where: { bno: bno, nickname: e.nickname },
+              }).then((ee) => {
+                if (ee == null) res.redirect("/updateerr");
+                else {
+                  Freeboard.update(
+                    { content: content, title: title },
+                    { where: { bno: bno, nickname: e.nickname } }
+                  );
+                  res.redirect("/updatesuccess");
+                }
+              });
+            }
+          });
+        }
+      }
+    );
+  } catch (error) {
+    res.redirect("/updateerr");
+  }
+});
 /** 이메일 인증 후 패스워드 변경 할 페이지 */
 // router.post("/changepwhurryup", (req, res) => {
 //   jwt.verify(
@@ -376,4 +412,74 @@ router.post("/contentregist", (req, res) => {
 //   );
 // });
 
+// router.post("/kakaopay", (req, res) => {
+//   try {
+//     const user_id = jwt.verify(
+//       req.session.access_token,
+//       process.env.ACCESS_TOKEN
+//     ).email;
+//     User.findOne({ where: { user_id: user_id } }).then((e) => {
+//       if (e == null) res.redirect("/");
+//       else {
+//         res.render("testsign", {});
+//       }
+//     });
+//   } catch (error) {
+//     res.redirect("/login");
+//   }
+// });
+
+router.post("/paysuc", (req, res) => {
+  jwt.verify(
+    req.session.access_token,
+    process.env.ACCESS_TOKEN,
+    (err, decoded) => {
+      if (err) res.send("fail");
+      else {
+        User.findOne({ where: { user_id: decoded.email } }).then((e) => {
+          if (e == null) res.send("fail");
+          else {
+            User.update(
+              { cash_point: e.cash_point + 1000000 },
+              { where: { user_id: decoded.email } }
+            );
+          }
+        });
+        res.send("suc");
+      }
+    }
+  );
+});
+
+router.post("/itembuy", (req, res) => {
+  const sno = req.body.sno;
+  Skin.findOne({ where: { sno: sno } }).then((e) => {
+    if (e == null) res.send("err");
+    else {
+      jwt.verify(
+        req.session.access_token,
+        process.env.ACCESS_TOKEN,
+        (err, decoded) => {
+          if (err) res.send("loginfail");
+          else {
+            User.findOne({ where: { user_id: decoded.email } }).then((ee) => {
+              if (ee == null) res.send("loginfail");
+              else {
+                if (ee.cash_point < e.price) {
+                  res.send("fail");
+                } else if (ee.cash_point >= e.price) {
+                  User.update(
+                    { cash_point: ee.cash_point - e.price },
+                    { where: { user_id: decoded.email } }
+                  );
+                  res.send("suc");
+                }
+              }
+            });
+          }
+        }
+      );
+    }
+  });
+});
 module.exports = router;

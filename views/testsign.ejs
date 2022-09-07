@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+</head>
+
+<body>
+    <button onclick="paysuc()">결제 승인</button>
+    <input type="hidden" value="<%=data %>" id="pg_token">
+    <input type="hidden" value="<%=tid %>" id="tid">
+</body>
+<script>
+    // const testsign = () => {
+    //     console.log(tid.value)
+    //     $.ajax({
+    //         type: "post",
+    //         url: "https://kapi.kakao.com/v1/payment/approve",
+    //         headers: {
+    //             Authorization: "KakaoAK a138e09487948affbe264ae294b29466",
+    //             "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
+    //         },
+    //         data: {
+    //             cid: "TC0ONETIME",
+    //             tid: tid.value,
+    //             partner_order_id: "0609",
+    //             partner_user_id: "gyeonghwan",
+    //             pg_token: pg_token.value,
+    //         }, success: (data) => {
+    //             console.log(data)
+    //         }
+    //     })
+    // }
+    const paysuc = () => {
+        $.ajax({
+            type: "post",
+            url: "/paysuc",
+            data: {
+
+            }, success: (data) => {
+                if (data == "fail") {
+                    alert("결제 실패 재 시도 바람")
+                    window.location = "/login"
+                }
+                else if (data == "suc") {
+                    alert("결제 성공")
+                    window.location = "/STORE"
+                }
+                else {
+                    alert("예기치 못한 에러 발생 지속 발생 시 관리자 문의")
+                }
+            }
+        })
+    }
+</script>
+
+</html>
