@@ -5,12 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>cat mario</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="/css/login.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap"
+      rel="stylesheet"
+    />
     <!-- ranking icon -->
     <link
       rel="stylesheet"
@@ -19,8 +29,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
   <body id="bg">
-    <!-- 게임 제목 -->
-    <div id="header"></div>
     <!-- loogin 및 ranking Main div 생성 -->
     <div id="logBody">
       <!-- loogin position 구성할 div 생성-->
@@ -67,63 +75,172 @@
             onclick="window.open(this.href,'회원가입','width=800px , height=800px , toolbar-no , scrollbars=yes'); return false;"
             ><span>Sign up</span></a
           >
-          <a href="/find"
-          onclick="window.open(this.href,'이메일 및 비밀번호 찾기','width=800px , height=650px , toolbar-no , scrollbars=yes'); return false;"
-          ><span>Forgot Email/Password?</span></a>
+          <a
+            href="/find"
+            onclick="window.open(this.href,'이메일 및 비밀번호 찾기','width=800px , height=650px , toolbar-no , scrollbars=yes'); return false;"
+            ><span>Forgot Email/Password?</span></a
+          >
         </div>
         <!-- loogin content3 -->
         <div class="log_btn1">
           <div class="log_btn-outline">
             <button class="log_btn2" onclick="login()">LOGIN</button>
-          </div>          
+          </div>
         </div>
       </div>
       <!-- 오른쪽 화면단 -->
-      <!-- 경환아 이 부분이야 -->
-      <div class="right-basic">
-        <div id="right-header">게시판</div>
-        <div class="hr-line"></div>
-        <div class="right-databox">
-          <div class="right-date-content" id="writing-time">작성시간</div>
-          <div class="right-date-content" id="right-date-title">제목</div>
-          <div class="right-date-content" id="nickname">닉네임</div>
-          <div class="right-date-content" id="click-views">조회수</div>  
-          <br>
-          <% for (let i = 0; i < 20 ; i++) { %>
-            <div class="right-date-content" id="writing-time"><%= data[i]?.createdAt %> </div>
-            <div class="right-date-content" id="right-date-title"><a href="/board/<%= data[i]?.bno%>"><%= data[i]?.title %> </a></div>
-            <div class="right-date-content" id="nickname"><%= data[i]?.nickname %> </div>
-            <div class="right-date-content" id="click-views"><%= data[i]?.replypoint %> </div>
-            <br>
-            <% } %>
+      <div id="logBodyRight">
+        <div class="right-top">
+          <div id="right-header">NOTICE</div>
         </div>
-        <button id="left-clickbtn"><a href="/store">STORE</a></button> 
+        <div class="right-middle">
+          <div class="right-mid-title">
+            <div class="wid25" id="writing-time">작성시간</div>
+            <div class="wid25" id="right-date-title">제목</div>
+            <div class="wid25" id="nickname">닉네임</div>
+            <div class="wid25" id="click-views">조회수</div>
+          </div>
+          <div class="right-mid-content-display">
+            <% for (let i = 0; i < data.length ; i++) { %>
+            <div class="right-mid-content">
+              <div class="wid25 overtxt pad5" id="writing-time">
+                <%= data[i]?.createdAt %>
+              </div>
+              <div class="wid25 overtxt pad5" id="right-date-title">
+                <a href="/board/<%= data[i]?.bno%>"><%= data[i]?.title %> </a>
+              </div>
+              <div class="wid25 overtxt pad5" id="nickname">
+                <%= data[i]?.nickname %>
+              </div>
+              <div class="wid25 overtxt pad5" id="click-views">
+                <%= data[i]?.replypoint %>
+              </div>
+            </div>
+            <% } %>
+          </div>
+          <div class="pagination">
+            <i class="fa-solid fa-arrow-left"></i>
+            <ol id="numbers"></ol>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </div>
+        <div class="right-bottom">
+          <button id="right-clickbtn" onclick="location.href = '/store'">
+            STORE
+          </button>
+        </div>
       </div>
+    </div>
   </body>
   <script type="module" src="/js/app.js"></script>
   <script>
-    function login(){
+    function login() {
       let id = $(".user_id").val();
       let pw = $(".user_pw").val();
       $.ajax({
-        url:"/login",
-        type:"post",
-        data:{
+        url: "/login",
+        type: "post",
+        data: {
           id: id,
           pw: pw,
-        },success: (data)=>{
-          if (data == 'fail') {
-            alert("로그인 실패 Eamil/Password 확인해주세요")
+        },
+        success: (data) => {
+          if (data == "fail") {
+            alert("로그인 실패 Eamil/Password 확인해주세요");
             location.reload();
-          }else if(data == "login true"){
-            location.href = '/keep';
-          }
-          else {
-            alert("잘못된 요청입니다.")
+          } else if (data == "login true") {
+            location.href = "/keep";
+          } else {
+            alert("잘못된 요청입니다.");
             location.reload();
           }
-        }
-      })
+        },
+      });
     }
+    const rowsPerPage = 12;
+    const rows = document.querySelectorAll(".right-mid-content");
+    const rowsCount = rows.length;
+    const pageCount = Math.ceil(rowsCount / rowsPerPage);
+    const numbers = document.querySelector("#numbers");
+    // 변수 추가
+    const prevPageBtn = document.querySelector(".fa-arrow-left");
+    const nextPageBtn = document.querySelector(".fa-arrow-right");
+    let pageActiveIdx = 0; //현재 보고있는 페이지 그룹의 번호
+    let maxPageNum = 3; //페이지그룹의 최대 개수
+    // 페이지네이션 생성
+    for (let i = 1; i <= pageCount; i++) {
+      numbers.innerHTML += `<li><a href = "">${i}</a></li>`;
+    }
+    const numberBtn = numbers.querySelectorAll("a");
+    numberBtn.forEach((item, index) => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        // list 출력 함수 생성
+        displayRow(index);
+      });
+    });
+    function displayRow(index) {
+      let start = index * rowsPerPage;
+      let end = start + rowsPerPage;
+      let rowsArray = [...rows];
+      for (ra of rowsArray) {
+        ra.style.display = "none";
+      }
+      let newRows = rowsArray.slice(start, end);
+      for (nr of newRows) {
+        nr.style.display = "";
+      }
+      for (nb of numberBtn) {
+        nb.classList.remove("active");
+      }
+      numberBtn[index].classList.add("active");
+    }
+    displayRow(0);
+    // 페이지네이션 그룹 표시함수
+    function displayPage(num) {
+      // 페이지네이션 번호 감추기
+      for (nb of numberBtn) {
+        nb.style.display = "none";
+        let totalPageCount = Math.ceil(pageCount / maxPageNum);
+        let pageArr = [...numberBtn];
+        let start = num * maxPageNum;
+        let end = start + maxPageNum;
+        let pageListArr = pageArr.slice(start, end);
+        for (item of pageListArr) {
+          item.style.display = "block";
+        }
+        if (pageActiveIdx == 0) {
+          prevPageBtn.style.display = "none";
+        } else {
+          prevPageBtn.style.display = "block";
+        }
+        if (pageActiveIdx == totalPageCount - 1) {
+          nextPageBtn.style.display = "none";
+        } else {
+          nextPageBtn.style.display = "block";
+        }
+      }
+    }
+    displayPage(0);
+    nextPageBtn.addEventListener("click", () => {
+      /*
+      123 - pageActiveIdx 0
+              displayrow(3)
+      456 - pageActiveIdx 1
+              displayrow(6)
+      789 - pageActiveIdx 2
+              displayrow(9)
+      */
+      let nextPageNum = pageActiveIdx * maxPageNum + maxPageNum;
+      displayRow(nextPageNum);
+      ++pageActiveIdx;
+      displayPage(pageActiveIdx);
+    });
+    prevPageBtn.addEventListener("click", () => {
+      let nextPageNum = pageActiveIdx * maxPageNum - maxPageNum;
+      displayRow(nextPageNum);
+      --pageActiveIdx;
+      displayPage(pageActiveIdx);
+    });
   </script>
 </html>

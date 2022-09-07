@@ -2,10 +2,10 @@ const dotenv = require("dotenv").config();
 
 const config = {
   dev: {
-    username: "root",
-    password: process.env.DB_PASSWORD,
-    host: "127.0.0.1",
-    database: "test99",
+    username: "rudghks09",
+    password: "rudghks110",
+    host: "localhost",
+    database: "mydb",
     dialect: "mysql",
   },
 };

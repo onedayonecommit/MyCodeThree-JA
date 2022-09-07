@@ -75,7 +75,7 @@ router.post("/email", (req, res) => {
   const authnumber = randomauth.randomfunc();
   // req.session.authnumber = bcrypt.hashSync(authnumber, 10);
   User.findOne({ where: { user_email: email } }).then((e) => {
-    if (e == null) {
+    if (e == null && email != "") {
       req.session.emailtoken = jwt.sign(
         {
           user_email: email,
@@ -97,7 +97,7 @@ router.post("/email", (req, res) => {
       res.send("usable");
     } else if (e != null) {
       res.send("disusable");
-    } else {
+    } else if (email == "") {
       res.send("failed");
     }
   });
@@ -106,15 +106,17 @@ router.post("/email", (req, res) => {
 /** 이메일 인증번호 확인 하는 곳 */
 router.post("/authcheck", (req, res) => {
   let authnumber = req.body.authnumber;
-  jwt.verify(
-    req.session.emailtoken,
-    process.env.ACCESSTOKEN_SECRET,
-    (err, decoded) => {
-      if (err) res.send("timeover");
-      else if (req.session.user_auth_number == authnumber) res.send("suc");
-      else res.send("fail");
-    }
-  );
+  if (authnumber != "") {
+    jwt.verify(
+      req.session.emailtoken,
+      process.env.ACCESSTOKEN_SECRET,
+      (err, decoded) => {
+        if (err) res.send("timeover");
+        else if (req.session.user_auth_number == authnumber) res.send("suc");
+        else res.send("fail");
+      }
+    );
+  } else res.send("null");
 });
 
 /** 아이디 중복 확인 하는 곳 */
@@ -133,10 +135,11 @@ router.post("/userIdCheck", (req, res) => {
 /** 닉네임 중복 확인 하는 곳 */
 router.post("/nickCheck", (req, res) => {
   User.findOne({ where: { nickname: req.body.user_nickname } }).then((e) => {
-    if (e == null) {
+    if (e == null && req.body.user_nickname != "") {
       req.session.user_nickname = req.body.user_nickname;
       res.send("usable");
     } else if (e != null) res.send("disusable");
+    else if (req.body.user_nickname != "") res.send("null");
   });
 });
 
@@ -184,7 +187,7 @@ router.post("/findemail", (req, res) => {
   const email = req.body.email;
   User.findOne({ where: { user_email: req.body.email } }).then((e) => {
     if (e == null) res.send("notemail");
-    else {
+    else if (email != "") {
       req.session.user_email = req.body.email;
       req.session.emailtoken = jwt.sign(
         {
@@ -259,7 +262,7 @@ router.post("/findpw", (req, res) => {
 router.post("/finalchangepw", (req, res) => {
   const { user_pw, user_pw_a } = req.body;
   if (user_pw != user_pw_a) res.send("failpw");
-  else if (user_pw == user_pw_a) {
+  else if (user_pw == user_pw_a && user_pw != "") {
     jwt.verify(
       req.session.findpwtoken,
       process.env.FINDPWTOKEN,
@@ -294,7 +297,7 @@ router.post("/changepw", (req, res) => {
   User.findOne({ where: { user_id: user_id } }).then((e) => {
     bcrypt.compare(nowpw, e.user_password, (err, decoded) => {
       if (!decoded) res.send("nowpwfailed");
-      else if (user_password != null && user_password == user_password_a) {
+      else if (user_password != "" && user_password == user_password_a) {
         bcrypt.hash(user_password, 10, (err, encoded) => {
           User.update(
             { user_password: encoded },

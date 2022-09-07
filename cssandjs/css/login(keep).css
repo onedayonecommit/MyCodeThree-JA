@@ -37,14 +37,14 @@ canvas {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: rgba(255, 255, 255, 0.2);
-  /* max-width: 800px; */
-  height: 800px;
+  width: 70%;
+  height: 80%;
   display: flex;
   border-radius: 20px;
 }
 
 #logBodyLeft {
-  width: 500px;
+  width: 50%;
   margin: 0 auto;
   height: 100%;
   display: flex;
@@ -60,7 +60,7 @@ canvas {
   width: 100%;
   margin-top: 50px;
   font-family: "Nanum Myeongjo", serif;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bold;
 }
 
@@ -76,11 +76,14 @@ canvas {
 }
 
 #logBodyRight {
+  position: relative;
   width: 50%;
   margin: 0 auto;
   height: 100%;
   border: solid thin rgba(27, 26, 26, 0.3);
   border-width: 0 0 0 1px;
+  display: flex;
+  flex-direction: column;
 }
 
 .log_btn2 {
@@ -126,41 +129,80 @@ canvas {
   transition: all 0.2s;
 }
 
-.hr-line {
+.right-top {
   position: relative;
-  top: 11%;
-  display: block;
   width: 100%;
-  height: 1px;
-  background-color: black;
+  height: 15%;
 }
-.right-basic {
-  position: relative;
-  width: 500px;
-  border-left: 1px solid black;
-}
-
 #right-header {
-  position: relative;
-  top: 10%;
-  left: 10%;
-  float: left;
-  margin-bottom: 5px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 1000;
+  font-size: 30px;
+  font-family: "Nanum Myeongjo", serif;
+  letter-spacing: 4px;
 }
 
-.right-date-content {
+.right-middle {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.right-mid-title {
+  display: flex;
+  flex-direction: row;
+  padding: 20px 0px;
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 16px;
+  font-weight: 1000;
+  border-bottom: dotted 1px black;
+}
+
+.wid25 {
+  width: 25%;
+}
+
+.overtxt {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pad5 {
+  padding: 0 5px;
+}
+
+.right-mid-content-display {
+  display: flex;
+  flex-direction: column;
+}
+
+.right-mid-content {
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+}
+
+.right-bottom {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  justify-content: space-around;
+}
+
+/* .right-date-content {
   position: absolute;
   display: inline;
-}
+} */
 
 #right-clickbtn {
-  position: absolute;
-  right: 12%;
-  bottom: 20%;
   border: solid 3px rgb(43, 37, 37);
-  width: 30%;
-  height: 50px;
-  padding: 10px 20px 10px 20px;
+  width: 40%;
+  height: 55px;
+  /* padding: 10px 20px 10px 20px; */
   box-sizing: border-box;
   background: rgba(63, 56, 56, 0);
   font-weight: 600;
@@ -168,18 +210,21 @@ canvas {
   cursor: pointer;
   font-size: 17px;
   border-radius: 5px;
-  margin-left: 20px;
   letter-spacing: 5px;
-  /* font-family: "Nanum Gothic Coding", monospace; */
+  font-family: "Nanum Gothic Coding", monospace;
 }
+#right-clickbtn:hover {
+  background: rgb(117, 9, 9);
+  color: rgb(223, 207, 207);
+  border: solid 1px rgb(223, 207, 207);
+  transition: 0.3s;
+}
+
 #left-clickbtn {
-  position: absolute;
-  left: 12%;
-  bottom: 20%;
   border: solid 3px rgb(43, 37, 37);
-  width: 30%;
-  height: 50px;
-  padding: 10px 20px 10px 20px;
+  width: 40%;
+  height: 55px;
+  /* padding: 10px 20px 10px 20px; */
   box-sizing: border-box;
   background: rgba(63, 56, 56, 0);
   font-weight: 600;
@@ -187,33 +232,50 @@ canvas {
   cursor: pointer;
   font-size: 17px;
   border-radius: 5px;
-  margin-left: 20px;
   letter-spacing: 5px;
-  /* font-family: "Nanum Gothic Coding", monospace; */
+  font-family: "Nanum Myeongjo", serif;
 }
+#left-clickbtn:hover {
+  background: rgb(117, 9, 9);
+  color: rgb(223, 207, 207);
+  border: solid 1px rgb(223, 207, 207);
+  transition: 0.3s;
+}
+
 a {
-  text-decoration: none;
-  color: rgb(43, 37, 37);
+  color: rgb(27, 30, 60);
   font-family: "Nanum Gothic Coding", monospace;
 }
 
-.right-databox {
-  position: relative;
-  top: 13%;
+.pagination {
+  text-align: center;
+  padding: 1rem;
+  position: absolute;
+  width: 100%;
+  bottom: 4%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#writing-time {
-  left: 8%;
+.pagination i {
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin: 0 10px;
 }
 
-#right-date-title {
-  left: 35%;
+#numbers {
+  display: flex;
+  list-style: none;
 }
 
-#nickname {
-  left: 60%;
+#numbers li a {
+  color: black;
+  padding: 4px;
+  font-size: 20px;
 }
 
-#click-views {
-  left: 80%;
+#numbers li a.active {
+  color: white;
 }

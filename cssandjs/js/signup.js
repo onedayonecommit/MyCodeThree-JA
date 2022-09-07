@@ -93,9 +93,10 @@ function email() {
           alert("이미 중복된 이메일 입니다. 다른 이메일 사용 부탁드립니다.");
           break;
         case "failed":
-          alert("오류 발생 재 인증 부탁드립니다.");
+          alert("이메일 입력 바랍니다.");
           break;
         default:
+          alert("오류 발생 재 인증 부탁드립니다.");
           break;
       }
     },

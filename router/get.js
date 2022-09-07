@@ -213,6 +213,10 @@ router.get("/board/:id", (req, res) => {
   });
 });
 
+router.get("/kakaopay", (req, res) => {
+  res.render("test");
+});
+
 // router.get("/board/" + "?id" , (req, res) => {
 //   Freeboard.findOne
 // });
