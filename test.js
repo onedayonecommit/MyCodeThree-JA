@@ -1,3 +1,36 @@
+// const summm = () => {
+//     let a = [];
+//     for (let i = 1; i <= 50; i++) {
+//         var ii = String(i).substring(0, 1);
+//         var iii = String(i).substring(1, 2);
+//         if (
+//             Number(ii) % 3 == 0 &&
+//             Number(iii) % 3 == 0 &&
+//             i > 10 &&
+//             Number(iii) != 0
+//         )
+//             a.push("짝짝");
+//         else if (i < 10 && Number(ii) % 3 == 0) a.push("짝");
+//         else if (
+//             i > 10 &&
+//             ((Number(ii) % 3 != 0 && Number(iii) % 3 == 0 && Number(iii) != 0) ||
+//                 (Number(ii) % 3 == 0 && Number(iii) % 3 != 0 && Number(iii) != 0))
+//         )
+//             a.push("짝");
+//         else if (i % 30 == 0) a.push("짝");
+//         else a.push(i);
+//     }
+//     return a;
+// };
+// console.log(summm());
+
+// function sosu(a) {
+//     for (let i = 1; i <= a; i++) {
+//         if (a % i == 0) return true;
+//         else false
+//     }
+// }
+// console.log(sosu(15))
 // const express = require("express");
 // const session = require("express-session");
 // const dot = require("dotenv").config();

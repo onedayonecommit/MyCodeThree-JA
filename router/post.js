@@ -482,4 +482,10 @@ router.post("/itembuy", (req, res) => {
     }
   });
 });
+
+router.post("/kakaopaywait", (req, res) => {
+  req.session.tid = req.body.tid;
+  console.log(req.session.tid);
+  res.send("suc");
+});
 module.exports = router;

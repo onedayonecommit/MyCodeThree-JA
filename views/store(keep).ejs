@@ -343,7 +343,7 @@
         url: "/itembuy",
         type: "post",
         data: {
-          sno: 1
+          sno: 3
         }, success: (data) => {
           switch (data) {
             case "suc":
@@ -368,7 +368,7 @@
         url: "/itembuy",
         type: "post",
         data: {
-          sno: 1
+          sno: 4
         }, success: (data) => {
           switch (data) {
             case "suc":
@@ -407,9 +407,9 @@
         total_amount: 1000000,
         vat_amount: 200,
         tax_free_amount: 0,
-        approval_url: "http://localhost/kakaopaywait",
-        fail_url: "http://localhost/failed",
-        cancel_url: "http://localhost/cancel",
+        approval_url: "http://192.168.0.111/kakaopaywait",
+        fail_url: "http://192.168.0.111/failed",
+        cancel_url: "http://192.168.0.111/cancel",
       },
       success: (data) => {
         window.location = data.next_redirect_pc_url;

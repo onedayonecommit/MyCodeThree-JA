@@ -37,13 +37,14 @@
         cancel_url: "http://localhost",
       },
       success: async (data) => {
-        window.location = data.next_redirect_pc_url;
         console.log(data.tid)
         await $.ajax({
-          type: "get",
+          type: "post",
           url: "/kakaopaywait",
           data: {
             tid: data.tid
+          }, success: (data22) => {
+            if (data22 == "suc") { window.location = data.next_redirect_pc_url; }
           }
         })
       }

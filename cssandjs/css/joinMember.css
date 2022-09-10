@@ -44,7 +44,8 @@ h1 {
 
 .checkbtn_disable,
 .checkbtn_disable2,
-.checkbtn_disable3 {
+.checkbtn_disable3,
+.checkbtn_disable4 {
   margin-top: 5px;
   margin-right: 3px;
   justify-content: space-between;
@@ -59,7 +60,8 @@ h1 {
 }
 .checkbtn_able,
 .checkbtn_able2,
-.checkbtn_able3 {
+.checkbtn_able3,
+.checkbtn_able4 {
   font-size: 15px;
   margin-top: 5px;
   margin-right: 3px;

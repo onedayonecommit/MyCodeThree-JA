@@ -311,13 +311,14 @@ router.get("/updatesuccess", (req, res) => {
 });
 
 router.get("/kakaopaywait", (req, res) => {
-  const pg_token = url.parse(req.url, true).query;
-  console.log(pg_token);
-  console.log(req.session.tid);
-  res.render("testsign", {
-    data: pg_token.pg_token,
-    tid: req.session.tid,
-  });
+  // const pg_token = url.parse(req.url, true).query;
+  // console.log(pg_token);
+  // console.log(req.session.tid);
+  // res.render("testsign", {
+  //   data: pg_token.pg_token,
+  //   tid: req.session.tid,
+  // });
+  res.render("testsign");
 });
 
 module.exports = router;
